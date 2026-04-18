@@ -41,8 +41,9 @@ import RegisterVerify from "../Auth/RegisterVerify";
 import MyShifts from "../page/myShift/MyShifts";
 import BartenderProfile from "../page/bartenderProfile/BartenderProfile";
 import MyProfile from "../page/bartenderProfile/MyProfile";
-import AccountSetting from "../page/bartenderProfile/AccountSetting";
+
 import ProtectedRoute from "../protectedRoute/ProtectedRoute";
+import AccountSetting from "../page/bartenderProfile/AccountSetting";
 
 
 export const router = createBrowserRouter([

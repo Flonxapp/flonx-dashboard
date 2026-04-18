@@ -7,8 +7,9 @@ import LogoutIco from "../../components/icon/LogoutIco";
 import ArrayRightIco from "../../components/icon/ArrayRightIco";
 import { Navigate } from "../../Navigate";
 import { Link } from "react-router-dom";
-import LockIco from "../../components/icon/LockIco";
+
 import DeleteIco from "../../components/icon/DeleteIco";
+import LockIco from "../../components/icon/LockIco";
 
 const AccountSetting = () => {
   return (
