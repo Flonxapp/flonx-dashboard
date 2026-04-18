@@ -1,0 +1,367 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'Nunito';
+  src: url('/src/assets/font/Nunito-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url('/src/assets/font/Montserrat-Regular.ttf') format('truetype');
+}
+
+:root{
+  background-color: #0F0B1A;
+}
+.custom-delete-modal .ant-modal-content {
+  background-color: #161126 !important; /* black background */
+  border-radius: 12px;
+  border: 1px solid #2A2448;
+}
+
+.custom-delete-modal .ant-modal-header,
+
+
+.children-menu {
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+}
+.no-scrollbar {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+.custom-table .ant-table-thead > tr > th::before {
+  background-color: #2A2448 !important; /* তোমার পছন্দের color */
+}
+.custom-table .ant-table-thead > tr > th {
+  background-color: #822CE71A;
+  color: white;
+  font-weight: 600;
+  padding: 20px 15px;
+}
+.custom-table  {
+  border-left: 1px solid #2A2448;
+  border-right: 1px solid #2A2448;
+  border-radius: 8px 8px 0 0;
+  
+}
+/* remove borders */
+.custom-table .ant-table {
+  background: transparent;
+}
+
+.custom-table .ant-table-thead > tr > th {
+  border: none !important;
+}
+
+.custom-table .ant-table-tbody > tr > td {
+  border-bottom: 1px solid #2A2448 !important;
+  color: white;
+}
+
+
+
+
+/* row hover */
+.custom-table .ant-table-tbody > tr:hover > td {
+  background: #1E1835 !important;
+}
+.ant-pagination {
+  border: none !important;
+}
+
+
+
+
+
+/* Pagination buttons style */
+.ant-pagination-item {
+  border-radius: 15% !important; /* Make buttons circular */
+}
+
+/* Active pagination button */
+.ant-pagination-item-active {
+  background-color: #822CE71A !important; /* Active background color */
+  border-color: #2A2448 !important;  
+    /* Active border color */
+}
+
+
+.anticon {
+    display: inline-flex;
+    align-items: center;
+    border: none;
+    padding: 2px;
+    border-radius: 5px;
+    font-style: normal;
+    line-height: 0;
+    text-align: center;
+    text-transform: none;
+    vertical-align: -0.125em;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Active pagination button text */
+.ant-pagination-item-active > a {
+  color: white !important; /* Ensure active text color is white */
+}
+
+/* Hover effect for buttons */
+
+
+
+/* In your CSS file or inside a styled-components if you're using them */
+.no-border-radius-modal .ant-modal {
+  border-radius: 0 !important;
+}
+
+
+
+
+/* :where(.css-dev-only-do-not-override-49qm)[class^="ant-checkbox"] [class^="ant-checkbox"], :where(.css-dev-only-do-not-override-49qm)[class*=" ant-checkbox"] [class^="ant-checkbox"], :where(.css-dev-only-do-not-override-49qm)[class^="ant-checkbox"] [class*=" ant-checkbox"], :where(.css-dev-only-do-not-override-49qm)[class*=" ant-checkbox"] [class*=" ant-checkbox"] {
+    box-sizing: border-box;
+    background-color: #D9000A;
+} */
+
+:where(.css-dev-only-do-not-override-49qm).ant-checkbox-checked .ant-checkbox-inner {
+  background-color: #000000;
+  border-color: #000000;
+}
+
+
+
+:where(.css-dev-only-do-not-override-49qm).ant-tabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: #ff3916;
+  
+}
+
+
+
+
+.custom-tabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: red !important; /* Active ট্যাবের টেক্সট লাল হবে */
+}
+
+.custom-tabs .ant-tabs-ink-bar {
+  background-color: rgb(224, 63, 63) !important; /* Active ট্যাবের নিচের বর্ডার লাল হবে */
+}
+
+
+.custom-tabs .ant-tabs-tab:hover {
+  color: inherit !important; 
+}
+
+.custom-tabs .ant-tabs-tab-btn:hover {
+  color: inherit !important; /* ট্যাবের বাটনের hover রঙ রিমুভ */
+}
+
+
+.custom-tabs .ant-tabs-tab {
+  border-bottom: none !important; /* প্রতিটি ট্যাবের নিচে থাকা বর্ডার রিমুভ */
+}
+
+.custom-tabs .ant-tabs-tab-active {
+  border-bottom: 2px solid red !important; /* শুধুমাত্র অ্যাক্টিভ ট্যাবের জন্য বর্ডার */
+}
+
+
+
+
+
+
+
+
+/* Modal */
+.anticon {
+    display: inline-flex;
+    align-items: center;
+    color: white;
+    border:1px solid white;
+    padding: 2px;
+    border-radius: 5px;
+    font-style: normal;
+    line-height: 0;
+    text-align: center;
+    text-transform: none;
+    vertical-align: -0.125em;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+.custom-form .ant-form-item-label > label {
+  color: white !important;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.custom-input input::placeholder {
+  color: white !important;
+  opacity: 0.7;
+}
+
+/* Input Design */
+.custom-input {
+  height: 40px !important;
+  background-color: #1D1733 !important;
+  border-color: #2A2448 !important;
+  color: white !important;
+}
+.custom-input .ant-picker-suffix {
+  color: white !important;
+}
+
+.custom-input .ant-picker-separator {
+  color: white !important;
+}
+/* Placeholder color */
+.custom-input::placeholder {
+  color: white !important;
+  opacity: 0.7;
+}
+
+
+
+
+
+
+
+.custom-input1 input::placeholder {
+  color: white !important;
+  opacity: 0.7;
+}
+
+/* Input Design */
+.custom-input1 {
+  height: 40px !important;
+  background-color: #1D1733 !important;
+  border-color: #2A2448 !important;
+  color: white !important;
+}
+.custom-input1 .ant-picker-suffix {
+  color: white !important;
+}
+
+.custom-input1 .ant-picker-separator {
+  color: white !important;
+}
+/* Placeholder color */
+.custom-input1::placeholder {
+  color: white !important;
+  opacity: 0.7;
+}
+
+
+
+
+
+
+/* Dropdown container */
+.custom-select-dropdown {
+  background-color: #1D1733 !important;
+  color: white !important;
+  border-radius: 8px;
+  border: 1px solid #832ce700;
+ 
+}
+
+/* Individual option */
+.custom-select-dropdown .ant-select-item-option {
+  background-color: #1D1733 !important;
+  color: white !important;
+}
+
+/* Option hover */
+.custom-select-dropdown .ant-select-item-option-active {
+  background-color: #342a57 !important;
+  color: white !important;
+}
+
+/* Selected option */
+.custom-select-dropdown .ant-select-item-option-selected {
+  background-color: #161325 !important;
+  color: white !important;
+}
+
+
+
+
+
+
+
+/* Dropdown arrow color change and remove border */
+.custom-select .ant-select-arrow {
+  color: white !important; /* arrow color */
+  border: none !important;  /* remove border if any */
+  right: 8px;               /* optional: position adjustment */
+}
+
+/* Optional: Remove default focus outline around icon */
+.custom-select .ant-select-selector:focus .ant-select-arrow {
+  color: white !important;
+  box-shadow: none !important;
+}
+
+/* Custom Select */
+.custom-select .ant-select-selector {
+  height: 40px !important;
+  background-color: #1D1733 !important;
+  border-color: #2A2448 !important;
+  color: white !important;
+}
+
+/* Placeholder color */
+.custom-select .ant-select-selection-placeholder {
+  color: white !important;
+  opacity: 0.7;
+}
+
+/* Dropdown arrow color */
+.custom-select .ant-select-arrow {
+  color: white !important;
+}
+
+/* Hover & Focus */
+.custom-select .ant-select-selector:hover,
+.custom-select .ant-select-selector:focus {
+  border-color: #822CE71A !important;
+  box-shadow: 0 0 0 2px rgba(144, 73, 226, 0.2);
+}
+
+
+
+
+
+/* Upload container */
+.custom-upload .ant-upload {
+  background: #1D1733 !important;
+  border: 1px dashed #822CE71A !important;
+  width: 100% !important;
+  height: 120px !important;
+  border-radius: 10px;
+}
+
+/* Upload text */
+.upload-box {
+  color: white;
+  text-align: center;
+}
+
+.upload-box p {
+  font-size: 26px;
+  margin: 0;
+}
+
+.upload-box span {
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+
