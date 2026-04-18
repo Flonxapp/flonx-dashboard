@@ -42,15 +42,15 @@ import MyShifts from "../page/myShift/MyShifts";
 import BartenderProfile from "../page/bartenderProfile/BartenderProfile";
 import MyProfile from "../page/bartenderProfile/MyProfile";
 import AccountSetting from "../page/bartenderProfile/AccountSetting";
+import ProtectedRoute from "../protectedRoute/ProtectedRoute";
 
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: (
-     
-        <DashboardLayout></DashboardLayout>
-      
+      <ProtectedRoute><DashboardLayout></DashboardLayout>
+      </ProtectedRoute>
     ),
     children: [
       {
