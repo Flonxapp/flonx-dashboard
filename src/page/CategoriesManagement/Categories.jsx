@@ -12,7 +12,7 @@ import EditIcon from "../../components/icon/EditIcon";
 import { useDeleteCategoryMutation, useGetCategoryAllQuery } from "../redux/api/categoryApi";
 import { handleDeleteConfirm } from "../../components/ConfirmDelete";
 
-
+//rtt
 const Categories = () => {
 
 
