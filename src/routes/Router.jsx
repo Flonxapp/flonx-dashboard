@@ -39,11 +39,11 @@ import CompleteProfile from "../Auth/CompleteProfile";
 import ConnectStripe from "../Auth/ConnectStripe";
 import RegisterVerify from "../Auth/RegisterVerify";
 import MyShifts from "../page/myShift/MyShifts";
-import BartenderProfile from "../page/bartenderProfile/BartenderProfile";
+
 import MyProfile from "../page/bartenderProfile/MyProfile";
 
 import ProtectedRoute from "../protectedRoute/ProtectedRoute";
-import AccountSetting from "../page/bartenderProfile/AccountSetting";
+
 
 
 export const router = createBrowserRouter([
@@ -113,18 +113,12 @@ export const router = createBrowserRouter([
         path: "/dashboard/earning",
         element: <Earning></Earning>,
       },
-      {
-        path: "/dashboard/bartenderProfile",
-        element: <BartenderProfile></BartenderProfile>,
-      },
+      
         {
         path: "/dashboard/myProfile",
         element: <MyProfile></MyProfile>
       },
-     {
-        path: "/dashboard/accountSetting",
-        element: <AccountSetting></AccountSetting>
-      },
+   
       {
         path: "/dashboard/UpdateVenueProfile/:id",
         element: <UpdateVenyeProfile></UpdateVenyeProfile>,
