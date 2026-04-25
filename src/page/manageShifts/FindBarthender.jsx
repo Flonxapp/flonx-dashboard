@@ -10,6 +10,7 @@ import {
   Autocomplete,
   useJsApiLoader,
 } from "@react-google-maps/api";
+import { PageLoader } from "../../components/Loading";
 
 const containerStyle = {
   width: "100%",
@@ -62,7 +63,7 @@ const FindBarthender = () => {
     }
   };
 
-  if (isLoading) return <p className="text-white p-4">Loading...</p>;
+  if (isLoading) return <PageLoader></PageLoader>;
 
   return (
     <div className="p-4 text-white">

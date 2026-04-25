@@ -9,10 +9,13 @@ import {
   useUpdateStripeMutation,
 } from "../redux/api/stipApi";
 import { Spin } from "antd";
+import { PageLoader } from "../../components/Loading";
 
 const ManageProfile = () => {
   const { data: adminProfile, isLoading: profileLoading } =
     useGetProfileQuery();
+
+    console.log(adminProfile)
 
   const [connectStripe, { isLoading: connectLoading }] =
     useCreateStripeMutation();
@@ -50,7 +53,7 @@ const ManageProfile = () => {
     }
   };
 
-  if (profileLoading) return <div className="text-white">Loading...</div>;
+  if (profileLoading) return <PageLoader></PageLoader>;
 
   return (
     <div className="p-3 h-[87vh] overflow-auto">

@@ -3,6 +3,7 @@ import { Navigate } from "../../Navigate";
 import { Link, useParams } from "react-router-dom";
 import { FaStar } from "react-icons/fa";
 import { useGetSingleBartenderQuery } from "../redux/api/manageShiftApi";
+import { PageLoader } from "../../components/Loading";
 
 const BartenderDetails = () => {
   const { id } = useParams();
@@ -15,9 +16,7 @@ const BartenderDetails = () => {
   // ✅ Loading state
   if (isLoading) {
     return (
-      <div className="p-3 text-white">
-        <p>Loading...</p>
-      </div>
+      <PageLoader></PageLoader>
     );
   }
 

@@ -14,6 +14,17 @@ getDahboardTotal: builder.query({
       providesTags: ["terms"],
     }),
 
+      getEarnings: builder.query({
+      query: () => {
+        return {
+          url: "/meta/venue-owner-earning",
+          method: "GET",
+        };
+      },
+      providesTags: ["terms"],
+    }),
+
+
     getDahboardActivity: builder.query({
       query: ({fram}) => {
         return {
@@ -23,7 +34,16 @@ getDahboardTotal: builder.query({
       },
       providesTags: ["terms"],
     }),
-    
+        getOrder: builder.query({
+      query: ({ page, limit }) => {
+        return {
+          url: `/order/get-my-orders?page=${page}&limit=${limit}`,
+          method: "GET",
+        };
+      },
+      providesTags: ["terms"],
+    }),
+
 
     getTermsConditions: builder.query({
       query: () => {
@@ -179,7 +199,7 @@ getDahboardTotal: builder.query({
 });
 
 export const {
-  useGetPrivecyQuery,useGetTermsConditionsQuery,usePostPrivecyMutation, usePostTermsConditionMutation, useGetDahboardTotalQuery,useGetDahboardActivityQuery
+  useGetPrivecyQuery,useGetTermsConditionsQuery,usePostPrivecyMutation, usePostTermsConditionMutation, useGetDahboardTotalQuery,useGetDahboardActivityQuery, useGetEarningsQuery, useGetOrderQuery
   
 
 } = manageApi;

@@ -9,6 +9,7 @@ import CopyIco from "../../components/icon/CopyIco";
 import ShareIco from "../../components/icon/ShareIco";
 import DownloadIco from "../../components/icon/DownloadIco";
 import { useGetMyVenueQuery } from "../redux/api/productApi";
+import { PageLoader } from "../../components/Loading";
 
 const VenueProfile = () => {
   const { data: venueProdile, isLoading } = useGetMyVenueQuery();
@@ -67,7 +68,7 @@ const VenueProfile = () => {
 
   // ✅ Loading state
   if (isLoading) {
-    return <p className="text-white p-5">Loading...</p>;
+    return <PageLoader></PageLoader>;
   }
 
   return (
