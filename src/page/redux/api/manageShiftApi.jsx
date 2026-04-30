@@ -12,7 +12,7 @@ const manageShift = baseApi.injectEndpoints({
           searchTerm: searchTerm || undefined,
           lat: lat || undefined,
           lng: lng || undefined,
-          maxDistance: maxDistance ||5,
+          maxDistance: maxDistance || 5,
         },
       }),
       providesTags: ["bartender"],
@@ -53,12 +53,33 @@ const manageShift = baseApi.injectEndpoints({
       providesTags: ["shift"],
     }),
 
+    getSingleShifts: builder.query({
+      query: ({ id }) => {
+        return {
+          url: `/shift/single-shift/${id}`,
+          method: "GET",
+        };
+      },
+      providesTags: ["updateProfile"],
+    }),
+
     updateShiftRequest: builder.mutation({
       query: ({ id, data }) => {
         return {
           url: `/shift/accept-reject/${id}`,
           method: "PATCH",
           body: data,
+        };
+      },
+      invalidatesTags: ["updateProfile"],
+    }),
+
+    declinedShiftRequest: builder.mutation({
+      query: ({ id}) => {
+        return {
+          url: `/shift/decline-shift/${id}`,
+          method: "DELETE",
+        
         };
       },
       invalidatesTags: ["updateProfile"],
@@ -72,4 +93,6 @@ export const {
   useGetAllShiftQuery,
   useGetSingleBartenderQuery,
   useUpdateShiftRequestMutation,
+  useGetSingleShiftsQuery,
+  useDeclinedShiftRequestMutation,
 } = manageShift;
