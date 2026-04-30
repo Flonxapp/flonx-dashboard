@@ -1,106 +1,151 @@
 import React from "react";
 import { Navigate } from "../../Navigate";
-import { FiEye, FiDownload } from "react-icons/fi";
-import QRCode from "react-qr-code"; // optional if you want dynamic QR
-import BarProfileIco from "../../components/icon/BarProfileIco";
 import ProfileIcon from "../../components/icon/ProfileIcon";
 import { Link, useParams } from "react-router-dom";
-import { useGetSingleBartenderQuery } from "../redux/api/manageShiftApi";
+import {
+  useDeclinedShiftRequestMutation,
+  useGetSingleShiftsQuery,
+  useUpdateShiftRequestMutation,
+} from "../redux/api/manageShiftApi";
+
+import { message } from "antd";
 
 const ShiftDetails = () => {
- 
-  const venue = {
-    name: "15 March 2026",
-    owner: "22 March 2026",
-    email: "5:00 PM",
-    contact: "5:00 PM",
-    location: "Austin, Texas, USA",
-    rate: "$250.55",
+  const { id } = useParams();
+
+  const { data: singleShiftData, isLoading } = useGetSingleShiftsQuery({ id });
+
+  const [updateShiftRequest, { isLoading: rejectLoading }] =
+    useDeclinedShiftRequestMutation();
+
+  const shift = singleShiftData?.data;
+
+  const handleDecline = async () => {
+    try {
+      const res = await updateShiftRequest({
+        id: shift?._id,
+    
+      }).unwrap();
+      console.log(res);
+
+
+      message.success(res?.message || "Shift request declined successfully!");
+    } catch (err) {
+      console.log(err);
+      message.error(err?.data?.message || "Failed to decline request!");
+    }
   };
+
+  if (isLoading) return <div className="text-white p-5">Loading...</div>;
 
   return (
     <div className="p-3 h-[87vh] overflow-auto">
       <Navigate title="Manage Shifts" />
 
-      {/* Venue Details */}
-      <div className="mt-6 border text-white border-[#2A2448] rounded-xl  space-y-3">
+      {/* About Shift */}
+      <div className="mt-6 border text-white border-[#2A2448] rounded-xl space-y-3">
         <div className="border-b border-[#2A2448] italic p-3">
-          <h1>About Shift </h1>
+          <h1>About Shift</h1>
         </div>
 
         <div className="grid p-3 grid-cols-2 gap-4 text-sm">
           <div>
             <p className="text-gray-400 italic">Requested On</p>
-            <p>{venue.name}</p>
+            <p>{new Date(shift?.createdAt).toLocaleDateString()}</p>
           </div>
+
           <div>
             <p className="text-gray-400 italic">Shift Date</p>
-            <p>{venue.owner}</p>
+            <p>{new Date(shift?.startDateTime).toLocaleDateString()}</p>
           </div>
+
           <div>
             <p className="text-gray-400 italic">Shift Start Time</p>
-            <p>{venue.email}</p>
+            <p>{new Date(shift?.startDateTime).toLocaleTimeString()}</p>
           </div>
+
           <div>
             <p className="text-gray-400 italic">Shift End Time</p>
-            <p>{venue.contact}</p>
+            <p>{new Date(shift?.endDateTime).toLocaleTimeString()}</p>
           </div>
+
           <div>
             <p className="text-gray-400 italic">Shift Rate</p>
-            <p>{venue.rate}</p>
+            <p>$0</p>
           </div>
+
           <div>
             <p className="text-gray-400 italic">Shift Status</p>
-            <button className="bg-[#FFB02033] px-2 mt-1 text-[#FFB020] italic rounded-full ">
-              Requested
+            <button
+              className={`px-2 mt-1 italic rounded-full ${
+                shift?.status === "Requested"
+                  ? "bg-[#FFB02033] text-[#FFB020]"
+                  : "bg-green-500/20 text-green-400"
+              }`}
+            >
+              {shift?.status}
             </button>
           </div>
         </div>
       </div>
 
-      {/* QR Code Section */}
-      <div className="mt-6 border border-[#2A2448] rounded-xl ">
+      {/* Bartender Info */}
+      <div className="mt-6 border border-[#2A2448] rounded-xl">
         <div className="border-b border-[#2A2448] italic text-white p-3">
-          <h1>Bartender Info </h1>
+          <h1>Bartender Info</h1>
         </div>
-        <div className="p-3 flex items-center text-[#C9C6D6] text-[14px] justify-between">
-          <div className="">
-            <img
-              className="w-[70px] rounded-lg"
-              src="https://i.pravatar.cc/150?img=1"
-              alt="Bartender"
-            />
-          </div>
-          <div>foisalrk2@gmail.com</div>
-          <div>+1 (512) 555-0199</div>
-          <div className="italic">⭐4.4 (112)</div>
 
-          <div className="flex gap-2">
-            <Link to={"/dashboard/BartenderShifts/details/1"}>
+        <div className="p-3 flex items-center text-[#C9C6D6] text-[14px] justify-between">
+          <img
+            className="w-[70px] rounded-lg"
+            src={
+              shift?.bartender?.profile_image ||
+              "https://i.pravatar.cc/150?img=1"
+            }
+            alt="Bartender"
+          />
+
+          <div>{shift?.bartender?.email}</div>
+          <div>{shift?.bartender?.phone}</div>
+          <div className="italic">⭐ {shift?.avgRating || 0}</div>
+
+          <div>
+            <Link
+              to={`/dashboard/BartenderShifts/details/${shift?.bartender?._id}`}
+            >
               <button className="bg-[#822CE71A] p-3 rounded-lg hover:bg-[#3A2B5C]">
-                <ProfileIcon></ProfileIcon>
+                <ProfileIcon />
               </button>
             </Link>
           </div>
         </div>
       </div>
 
-      <div className="mt-6 border border-[#2A2448] italic rounded-xl ">
-        <div className="border-b border-[#2A2448]  text-white p-3">
-          <h1>Shifting Info </h1>
+      {/* Info Message */}
+      <div className="mt-6 border border-[#2A2448] italic rounded-xl">
+        <div className="border-b border-[#2A2448] text-white p-3">
+          <h1>Shifting Info</h1>
         </div>
-        <h1 className="text-white py-2 text-center ">
-          Your shift request has not been accepted yet. You will be notified
-          once it is confirmed.
+
+        <h1 className="text-white py-2 text-center">
+          {shift?.status === "Requested"
+            ? "Your shift request has not been accepted yet."
+            : "Shift already processed."}
         </h1>
       </div>
 
-      {/* Update Details Button */}
-      <div className="mt-6">
-        <button className="bg-gradient-to-tr w-[185px] from-[#DC3545] to-[#FE4C5D] text-white shadow-md px-3 py-2 rounded-full">
-          Dicline Request
-        </button>
-      </div>
+      {/* ✅ Decline Button (ONLY when Requested) */}
+      {shift?.status === "Requested" && (
+        <div className="mt-6">
+          <button
+            onClick={handleDecline}
+            disabled={rejectLoading}
+            className="bg-gradient-to-tr w-[185px] from-[#DC3545] to-[#FE4C5D] text-white shadow-md px-3 py-2 rounded-full disabled:opacity-70"
+          >
+            {rejectLoading ? "Processing..." : "Decline Request"}
+          </button>
+        </div>
+      )}
     </div>
   );
 };
