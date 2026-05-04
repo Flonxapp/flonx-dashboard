@@ -12,14 +12,18 @@ import {
 } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { FaChevronDown } from "react-icons/fa";
-import { useGetSingleProductQuery, useUpdateProductMutation } from "../redux/api/productApi";
-import { useGetCategoryAllQuery } from "../redux/api/categoryApi";
+import { useGetMyVenueQuery, useGetSingleProductQuery, useUpdateProductMutation } from "../redux/api/productApi";
+import { useGetCategoryAllQuery, useGetVenueCategoryAllQuery } from "../redux/api/categoryApi";
 import { useParams } from "react-router-dom";
 
 const { Option } = Select;
 
 const EditProduct = () => {
   const {id} = useParams();
+    const {data:venueProfile} = useGetMyVenueQuery()
+    console.log(venueProfile)
+    const venueId = venueProfile?.data?._id
+    console.log(venueId)
     const {data:productDetails} = useGetSingleProductQuery({id})
     console.log(productDetails)
     const product = productDetails?.data;
@@ -49,7 +53,7 @@ const EditProduct = () => {
   }
 }, [product, form]);
   const [updateProduct, { isLoading }] = useUpdateProductMutation()
-    const {data:category} = useGetCategoryAllQuery()
+  const {data:category} = useGetVenueCategoryAllQuery({page:1,limit:100, id: venueId}, { skip: !venueId })
      const formCategory = category?.data?.result;
 
   const [fileList, setFileList] = useState([]);

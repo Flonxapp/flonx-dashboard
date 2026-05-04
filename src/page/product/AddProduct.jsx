@@ -12,14 +12,19 @@ import {
 } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { FaChevronDown } from "react-icons/fa";
-import { useGetCategoryAllQuery } from "../redux/api/categoryApi";
-import { useAddProductMutation } from "../redux/api/productApi";
+import { useGetCategoryAllQuery, useGetVenueCategoryAllQuery } from "../redux/api/categoryApi";
+import { useAddProductMutation, useGetMyVenueQuery } from "../redux/api/productApi";
 
 const { Option } = Select;
 
 const AddProduct = () => {
+  const {data:venueProfile} = useGetMyVenueQuery()
+  console.log(venueProfile)
+  const id = venueProfile?.data?._id
+  console.log(id)
   const [addProduct, { isLoading }] = useAddProductMutation()
-  const {data:category} = useGetCategoryAllQuery()
+  const {data:category} = useGetVenueCategoryAllQuery({page:1,limit:100, id}, { skip: !id })
+  console.log(category)
    const formCategory = category?.data?.result;
   const [form] = Form.useForm();
   const [fileList, setFileList] = useState([]);
@@ -78,14 +83,14 @@ const AddProduct = () => {
     }
 
     
-    await addProduct(formData).unwrap();
+    const  res = await addProduct(formData).unwrap();
 
-    message.success("Product added successfully!");
+    message.success(res?.message || "Product added successfully");
     form.resetFields();
     setFileList([]);
   } catch (error) {
     console.error(error);
-    message.error("Failed to add product");
+    message.error(error?.data?.message || "Failed to add product");
   }
 };
 

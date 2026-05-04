@@ -2,30 +2,51 @@ import { baseApi } from "./baseApi";
 
 const category = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-
-
-
     getCategoryAll: builder.query({
-  query: ({ page, limit } = {}) => {
-    // start with base URL
-    let url = "/category/all-categories";
+      query: ({ page, limit } = {}) => {
+        // start with base URL
+        let url = "/category/all-categories";
 
-    // add query params only if they exist
-    const params = [];
-    if (page !== undefined) params.push(`page=${page}`);
-    if (limit !== undefined) params.push(`limit=${limit}`);
+        // add query params only if they exist
+        const params = [];
+        if (page !== undefined) params.push(`page=${page}`);
+        if (limit !== undefined) params.push(`limit=${limit}`);
 
-    if (params.length) {
-      url += `?${params.join("&")}`;
-    }
+        if (params.length) {
+          url += `?${params.join("&")}`;
+        }
 
-    return {
-      url,
-      method: "GET",
-    };
-  },
-  providesTags: ["updateProfile"],
-}),
+        return {
+          url,
+          method: "GET",
+        };
+      },
+      providesTags: ["updateProfile"],
+    }),
+
+
+
+       getVenueCategoryAll: builder.query({
+      query: ({ page, limit , id} = {}) => {
+        // start with base URL
+        let url = `/category/venue-categories/${id}`;
+
+        // add query params only if they exist
+        const params = [];
+        if (page !== undefined) params.push(`page=${page}`);
+        if (limit !== undefined) params.push(`limit=${limit}`);
+
+        if (params.length) {
+          url += `?${params.join("&")}`;
+        }
+
+        return {
+          url,
+          method: "GET",
+        };
+      },
+      providesTags: ["updateProfile"],
+    }),
 
     addCategory: builder.mutation({
       query: (data) => {
@@ -37,19 +58,18 @@ const category = baseApi.injectEndpoints({
       },
       invalidatesTags: ["updateProfile"],
     }),
-     deleteCategory :  builder.mutation({
-        query : (id)=>{
-            return {
-                url : `/category/delete-category/${id}`,
-                method : 'DELETE'
-            }
-        },
-        invalidatesTags :['updateProfile']
+    deleteCategory: builder.mutation({
+      query: (id) => {
+        return {
+          url: `/category/delete-category/${id}`,
+          method: "DELETE",
+        };
+      },
+      invalidatesTags: ["updateProfile"],
     }),
 
-
     updateCategory: builder.mutation({
-      query: ({id,data}) => {
+      query: ({ id, data }) => {
         return {
           url: `/category/update-category/${id}`,
           method: "PATCH",
@@ -59,7 +79,6 @@ const category = baseApi.injectEndpoints({
       invalidatesTags: ["updateProfile"],
     }),
 
-    
     // getAllProduct: builder.query({
     //   query: ({page,limit}) => {
     //     return {
@@ -80,19 +99,14 @@ const category = baseApi.injectEndpoints({
     //   providesTags: ["updateProfile"],
     // }),
 
-
-
     // deleteProduct: builder.mutation({
     //   query: (data) => ({
     //     url: `/admin/products`,
     //     method: "DELETE",
     //     body: {id:data},
     //   }),
-    //   invalidatesTags: ["updateProfile"],      
+    //   invalidatesTags: ["updateProfile"],
     // }),
-
-
-
 
     // updateProduct: builder.mutation({
     //   query: (data) => {
@@ -125,8 +139,6 @@ const category = baseApi.injectEndpoints({
     //    },
     //    providesTags: ["host"],
     //  }),
-
-
 
     //  getSingleHostreq: builder.query({
     //    query: ({ carId }) => {
@@ -171,7 +183,9 @@ const category = baseApi.injectEndpoints({
 });
 
 export const {
-  useAddCategoryMutation,useDeleteCategoryMutation,useGetCategoryAllQuery,useUpdateCategoryMutation
-  
-
+  useAddCategoryMutation,
+  useDeleteCategoryMutation,
+  useGetCategoryAllQuery,
+  useUpdateCategoryMutation,
+  useGetVenueCategoryAllQuery,
 } = category;
