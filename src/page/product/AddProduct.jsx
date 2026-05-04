@@ -49,7 +49,7 @@ const AddProduct = () => {
     imgWindow?.document.write(image.outerHTML);
   };
 
- const handleSubmit = async (values) => {
+const handleSubmit = async (values) => {
   try {
     const formData = new FormData();
 
@@ -58,36 +58,32 @@ const AddProduct = () => {
       formData.append("product_image", fileList[0].originFileObj);
     }
 
-    // ✅ Basic fields
-    formData.append("name", values.name);
-    formData.append("description", values.description);
-    formData.append("category", values.category);
-    formData.append("price", values.price);
-    formData.append("slogan", values.slogan);
-    formData.append("stock", values.stock);
+    // ✅ Make full object
+    const data = {
+      name: values.name,
+      description: values.description,
+      category: values.category,
+      price: values.price,
+      slogan: values.slogan,
+      stock: values.stock,
+      isAvailable: values.availability === "available",
+      tags: values.tags, // ✅ array as-is
+    };
 
-    // ✅ Availability → boolean
-    formData.append(
-      "isAvailable",
-      values.availability === "available"
-    );
-
-    // ✅ Tags (array → stringify or loop)
-    values.tags.forEach((tag) => {
-      formData.append("tags", tag);
-    });
+    // ✅ Append as JSON string
+    formData.append("data", JSON.stringify(data));
 
     // 🔍 Debug
     for (let pair of formData.entries()) {
       console.log(pair[0], pair[1]);
     }
 
-    
-    const  res = await addProduct(formData).unwrap();
+    const res = await addProduct(formData).unwrap();
 
     message.success(res?.message || "Product added successfully");
     form.resetFields();
     setFileList([]);
+
   } catch (error) {
     console.error(error);
     message.error(error?.data?.message || "Failed to add product");
