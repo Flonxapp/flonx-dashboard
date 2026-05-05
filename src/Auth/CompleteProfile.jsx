@@ -8,6 +8,7 @@ import {
 import { Form, Input, Button, Upload, message, Spin } from "antd";
 import { UploadOutlined, PlusOutlined } from "@ant-design/icons";
 import { useAddVenueMutation } from "../page/redux/api/userApi";
+import { useNavigate } from "react-router-dom";
 
 const containerStyle = {
   width: "100%",
@@ -15,6 +16,7 @@ const containerStyle = {
 };
 
 const CompleteProfile = () => {
+  const navigate = useNavigate();
     const [locationValue, setLocationValue] = useState("");
   const [completeProfile, { isLoading }] = useAddVenueMutation();
   const [position, setPosition] = useState(null);
@@ -99,6 +101,9 @@ const handlePlaceChanged = () => {
       const response = await completeProfile(formData).unwrap();
 
       message.success(response?.message || "Venue added successfully!");
+        form.resetFields();
+      setFileList([]);
+        navigate("/connectStripe");
     } catch (error) {
       console.error("API ERROR:", error);
       message.error(error?.data?.message || "Submission failed!");
