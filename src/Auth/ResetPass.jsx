@@ -1,51 +1,80 @@
-
 import React, { useState } from "react";
-import { Form, Input, Button } from "antd";
-import { FaEye, FaEyeSlash, FaGoogle, FaFacebookF } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Form, Input, message, Spin } from "antd";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import { useResetPasswordMutation } from "../page/redux/api/userApi";
 
 const ResetPass = () => {
-    const [form] = Form.useForm();
+  const [form] = Form.useForm();
+  const navigate = useNavigate();
+
+  const [resetPassword, { isLoading }] = useResetPasswordMutation();
+
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const onFinish = (values) => {
-    console.log("Form Values:", values);
-  
+
+
+  const onFinish = async (values) => {
+    const email = localStorage.getItem("resetEmail");
+
+    if (!email) {
+      message.error("Email not found!");
+      return;
+    }
+
+    try {
+      const res = await resetPassword({
+        email,
+        password: values.password,
+        confirmPassword: values.confirmPassword,
+      }).unwrap();
+
+      message.success(res?.message || "Password reset successful!");
+
+    
+      navigate("/login");
+
+    } catch (error) {
+      message.error(error?.data?.message || "Failed to reset password.");
+    }
   };
 
   return (
-   <div className="flex font-nunito justify-center items-center min-h-screen px-4 lg:px-0">
-      <div className="w-full max-w-lg  lg:p-8 p-4 border">
+    <div className="flex justify-center items-center min-h-screen px-4 bg-[#0F0B1A]">
+      <div className="w-full max-w-lg p-6 bg-[#822CE71A] rounded-lg">
+
         {/* Title */}
-        <h2 className="text-2xl font-semibold text-gray-900 mb-2">
+        <h2 className="text-2xl font-semibold text-white mb-2">
           Set a New Password
         </h2>
-        <p className="text-gray-600 mb-6 text-sm">
+
+        <p className="mb-6 text-sm text-gray-400">
           Secure your account by creating a new password.
         </p>
 
-        {/* Ant Design Form */}
+        {/* Form */}
         <Form form={form} layout="vertical" onFinish={onFinish}>
-          {/* Email */}
-        
 
           {/* Password */}
+          <label className="text-gray-400 block mb-1">
+            New Password
+          </label>
+
           <Form.Item
-            label="Enter New Password"
             name="password"
             rules={[
-              { required: true, message: "Please enter your password!" },
-              { min: 6, message: "Password must be at least 6 characters!" },
+              { required: true, message: "Enter your password!" },
+              { min: 6, message: "Minimum 6 characters!" },
             ]}
           >
             <Input
-            style={{height:'50px'}}
+              style={{ height: "50px" }}
               type={showPassword ? "text" : "password"}
-              placeholder="Enter New Password"
+              placeholder="Enter new password"
               suffix={
                 <span
-                  className="cursor-pointer text-gray-500"
+                  className="cursor-pointer text-gray-400"
                   onClick={() => setShowPassword(!showPassword)}
                 >
                   {showPassword ? <FaEyeSlash /> : <FaEye />}
@@ -55,12 +84,15 @@ const ResetPass = () => {
           </Form.Item>
 
           {/* Confirm Password */}
+          <label className="text-gray-400 block mb-1">
+            Confirm Password
+          </label>
+
           <Form.Item
-            label="Confirm New Password"
             name="confirmPassword"
             dependencies={["password"]}
             rules={[
-              { required: true, message: "Please confirm your password!" },
+              { required: true, message: "Confirm your password!" },
               ({ getFieldValue }) => ({
                 validator(_, value) {
                   if (!value || getFieldValue("password") === value) {
@@ -74,13 +106,15 @@ const ResetPass = () => {
             ]}
           >
             <Input
-            style={{height:'50px'}}
+              style={{ height: "50px" }}
               type={showConfirmPassword ? "text" : "password"}
-              placeholder="Confirm New Password"
+              placeholder="Confirm password"
               suffix={
                 <span
-                  className="cursor-pointer text-gray-500"
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className="cursor-pointer text-gray-400"
+                  onClick={() =>
+                    setShowConfirmPassword(!showConfirmPassword)
+                  }
                 >
                   {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
                 </span>
@@ -88,20 +122,25 @@ const ResetPass = () => {
             />
           </Form.Item>
 
-          {/* Continue Button */}
+          {/* Submit */}
           <Form.Item>
-          <Link to={'/'}>
-           <button
-              
-              htmlType="submit"
-              className="w-full bg-red-500 py-3 text-white rounded-md hover:bg-primary-dark transition-colors"
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="w-full h-12 text-white rounded-full bg-gradient-to-tr from-[#822CE7] to-[#BB82FF]"
             >
-              Continue
-            </button></Link>
+              {isLoading ? (
+                <div className="flex items-center justify-center gap-2">
+                  <Spin size="small" />
+                  <span>Processing...</span>
+                </div>
+              ) : (
+                "Continue"
+              )}
+            </button>
           </Form.Item>
-        </Form>
 
-    
+        </Form>
       </div>
     </div>
   );

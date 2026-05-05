@@ -2,13 +2,17 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import OTPInput from "react-otp-input";
 import { Spin, message } from "antd";
-import { useRegisterVerifyMutation, useResentVerifyMutation } from "../page/redux/api/userApi";
+import {
+  useRegisterVerifyMutation,
+  useRegisterVerifyUserMutation,
+  useResentVerifyMutation,
+} from "../page/redux/api/userApi";
 import { useDispatch } from "react-redux";
 import { setToken } from "../page/redux/features/auth/authSlice";
 
 const RegisterVerify = () => {
   const dispatch = useDispatch();
-  const [registerVerify, { isLoading }] = useRegisterVerifyMutation();
+  const [registerVerify, { isLoading }] = useRegisterVerifyUserMutation();
   const [resendVerify, { isLoading: isResending }] = useResentVerifyMutation();
   const [otp, setOtp] = useState("");
   const [email, setEmail] = useState("");
@@ -35,7 +39,7 @@ const RegisterVerify = () => {
     try {
       const payload = { email, verifyCode: Number(otp) };
       const response = await registerVerify(payload).unwrap();
-console.log(response)
+      console.log(response);
       message.success(response?.message || "Verification successful!");
       localStorage.removeItem("registerEmail");
       dispatch(setToken(response?.data?.accessToken));
@@ -66,7 +70,8 @@ console.log(response)
         </h2>
         <p className="text-gray-400 mb-6 text-sm">
           Enter the 6-digit code sent to{" "}
-          <span className="text-[#822CE7]">{email}</span> to complete registration.
+          <span className="text-[#822CE7]">{email}</span> to complete
+          registration.
         </p>
 
         {/* OTP Inputs */}
@@ -92,7 +97,9 @@ console.log(response)
           onClick={handleVerify}
           disabled={isLoading}
           className={`w-full py-3 rounded text-white flex justify-center items-center gap-2 ${
-            isLoading ? "bg-[#b879ff] cursor-not-allowed" : "bg-[#822CE7] hover:bg-[#4a0e8f]"
+            isLoading
+              ? "bg-[#b879ff] cursor-not-allowed"
+              : "bg-[#822CE7] hover:bg-[#4a0e8f]"
           }`}
         >
           {isLoading ? (
