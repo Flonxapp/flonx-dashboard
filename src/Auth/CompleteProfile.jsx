@@ -217,7 +217,7 @@ const handlePlaceChanged = () => {
           <button
             type="submit"
             disabled={isLoading}
-            className={`w-full py-3 rounded text-white flex justify-center items-center gap-2 ${
+            className={`w-full py-3 mt-3 rounded text-white flex justify-center items-center gap-2 ${
               isLoading ? "bg-[#b879ff]" : "bg-[#822CE7] hover:bg-[#4a0e8f]"
             }`}
           >
