@@ -15,7 +15,7 @@ const VenueProfile = () => {
   const { data: venueProdile, isLoading } = useGetMyVenueQuery();
   const venue = venueProdile?.data;
   console.log(venueProdile);
-  const venueLink = `https://flonx-venue-owner-dashboard-client.vercel.app/auth/login/${venue?._id}`;
+  const venueLink = `https://flonx-progressive-web-client.vercel.app/auth/login/${venue?._id}`;
   const [showQRModal, setShowQRModal] = useState(false);
   const qrRef = useRef(null);
 
