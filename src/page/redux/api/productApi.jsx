@@ -38,6 +38,20 @@ const product = baseApi.injectEndpoints({
       },
       invalidatesTags: ["updateProfile"],
     }),
+
+
+   addRatting: builder.mutation({
+      query: (data) => {
+        return {
+          url: "/shift-rating/add-rating",
+          method: "POST",
+          body: data,
+        };
+      },
+      invalidatesTags: ["updateProfile"],
+    }),
+
+
      deleteProduct :  builder.mutation({
         query : (id)=>{
             return {
@@ -98,5 +112,5 @@ const product = baseApi.injectEndpoints({
 });
 
 export const {
-  useAddProductMutation,useGetMyVenueQuery, useDeleteProductMutation,useGetProductAllQuery,useUpdateProductMutation, useGetSingleProductQuery,useUpdateVenueDetailsMutation, useGetSingleVenueQuery
+  useAddProductMutation,useGetMyVenueQuery, useDeleteProductMutation,useGetProductAllQuery,useUpdateProductMutation, useGetSingleProductQuery,useUpdateVenueDetailsMutation, useGetSingleVenueQuery, useAddRattingMutation
 } = product;

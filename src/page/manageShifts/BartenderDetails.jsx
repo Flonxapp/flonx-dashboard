@@ -12,7 +12,7 @@ const BartenderDetails = () => {
     useGetSingleBartenderQuery({ id });
 
   const bartender = bartenderDetails?.data;
-
+console.log(bartender)
   // ✅ Loading state
   if (isLoading) {
     return (
@@ -27,7 +27,7 @@ const BartenderDetails = () => {
       {/* Profile Image */}
       <div className="flex items-center gap-4">
         <img
-          src={"https://i.pravatar.cc/150?img=12"}
+          src={bartenderDetails?.data?.profile_image}
           alt="Bartender"
           className="w-20 h-20 object-cover rounded-lg"
         />

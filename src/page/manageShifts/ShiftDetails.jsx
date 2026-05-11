@@ -1,33 +1,33 @@
-import React from "react";
+import React, { useState } from "react";
 import { Navigate } from "../../Navigate";
 import ProfileIcon from "../../components/icon/ProfileIcon";
 import { Link, useParams } from "react-router-dom";
 import {
   useDeclinedShiftRequestMutation,
   useGetSingleShiftsQuery,
-  useUpdateShiftRequestMutation,
+
 } from "../redux/api/manageShiftApi";
 
 import { message } from "antd";
+import AddRattingModal from "./AddRattingModal";
 
 const ShiftDetails = () => {
   const { id } = useParams();
 
   const { data: singleShiftData, isLoading } = useGetSingleShiftsQuery({ id });
-
+const [openAddModal, setOpenAddModal] = useState(false);
   const [updateShiftRequest, { isLoading: rejectLoading }] =
     useDeclinedShiftRequestMutation();
 
   const shift = singleShiftData?.data;
+  console.log(shift);
 
   const handleDecline = async () => {
     try {
       const res = await updateShiftRequest({
         id: shift?._id,
-    
       }).unwrap();
       console.log(res);
-
 
       message.success(res?.message || "Shift request declined successfully!");
     } catch (err) {
@@ -37,7 +37,26 @@ const ShiftDetails = () => {
   };
 
   if (isLoading) return <div className="text-white p-5">Loading...</div>;
+  const getTimeRemaining = (startDateTime) => {
+    const total = new Date(startDateTime) - new Date();
 
+    if (total <= 0) {
+      return "Your shift has started.";
+    }
+
+    const days = Math.floor(total / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((total / (1000 * 60 * 60)) % 24);
+    const minutes = Math.floor((total / 1000 / 60) % 60);
+    const seconds = Math.floor((total / 1000) % 60);
+
+    return `${days} Days : ${hours
+      .toString()
+      .padStart(2, "0")} Hours : ${minutes
+      .toString()
+      .padStart(2, "0")} Minutes : ${seconds
+      .toString()
+      .padStart(2, "0")} Seconds`;
+  };
   return (
     <div className="p-3 h-[87vh] overflow-auto">
       <Navigate title="Manage Shifts" />
@@ -129,8 +148,12 @@ const ShiftDetails = () => {
 
         <h1 className="text-white py-2 text-center">
           {shift?.status === "Requested"
-            ? "Your shift request has not been accepted yet."
-            : "Shift already processed."}
+            ? "Your shift request has not been accepted yet. You will be notified once it is confirmed."
+            : shift?.status === "Upcoming"
+              ? `Your shift starts in - ${getTimeRemaining(
+                  shift?.startDateTime,
+                )}`
+              : "Shift already processed."}
         </h1>
       </div>
 
@@ -146,6 +169,21 @@ const ShiftDetails = () => {
           </button>
         </div>
       )}
+
+       {shift?.status === "Completed" && (
+        <div className="mt-6">
+          <button
+         onClick={() => setOpenAddModal(true)}
+            className="bg-gradient-to-tr w-[185px] from-[#DC3545] to-[#FE4C5D] text-white shadow-md px-3 py-2 rounded-full disabled:opacity-70"
+          >
+            Send Ratting
+          </button>
+        </div>
+      )}
+      <AddRattingModal  openAddModal={openAddModal}
+        setOpenAddModal={setOpenAddModal} shift={id} bartender={shift?.bartender?._id}/>
+
+     
     </div>
   );
 };

@@ -19,6 +19,7 @@ import { TbCategory2 } from "react-icons/tb";
 import { FaChevronRight, FaHome } from "react-icons/fa";
 import items from "../item.json";
 import { IoIosLogIn } from "react-icons/io";
+import { useGetProfileQuery } from "../../page/redux/api/userApi";
 const icons = {
   FaHome,
   FiUser,
@@ -103,7 +104,8 @@ const Header = () => {
   const [selectedKey, setSelectedKey] = useState("dashboard");
   const [expandedKeys, setExpandedKeys] = useState([]);
   const navigate = useNavigate();
-
+ const { data: adminProfile, isLoading: profileLoading } =
+    useGetProfileQuery();
   const contentRef = useRef({});
 
   const onParentClick = (key) => {
@@ -271,13 +273,13 @@ const Header = () => {
             <div className="flex gap-3">
               <div>
                 <img
-                  className="w-[45px] h-[45px] rounded-lg"
-                  src={'https://i.pravatar.cc/150?img=1'}
+                  className="w-[45px] h-[45px] rounded-lg object-cover"
+                  src={adminProfile?.data?.profile_image}
                   alt="profile"
                 />
               </div>
               <div className=" text-white italic">
-                <h3>Your Name</h3>
+                <h3>{adminProfile?.data?.name}</h3>
                 <h4 className="bg-[#22C55E33] px-2 text-[#22C55E] rounded-full ">Venue Owner</h4>
               </div>
             </div>
