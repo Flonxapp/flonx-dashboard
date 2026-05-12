@@ -109,10 +109,10 @@ const ConnectStripe = () => {
             type="button"
             onClick={handleConnectStripe}
             disabled={isLoading || isStripe}
-            className={`w-full py-3 rounded-full text-white flex justify-center items-center gap-2
+            className={`w-full py-3 rounded-full  flex justify-center items-center gap-2
       ${
         isStripe
-          ? "bg-green-100 border border-green-500 text-green-600"
+          ? "bg-[#00800033] border border-[green] text-green-600"
           : isLoading
             ? "bg-[#822CE71A] border border-[#822CE7] text-[#822CE7]"
             : "bg-[#822CE7] hover:bg-[#4a0e8f]"
