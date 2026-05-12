@@ -62,9 +62,20 @@ console.log(bartender)
 
           <div>
             <p className="text-gray-400">Primary Bar Skills</p>
-            <button className="bg-[#822CE71A] px-2 mt-1 text-[#822CE7] rounded-full">
-              N/A
-            </button>
+             <div className="flex flex-wrap gap-1">
+            {bartender?.skills?.length > 0 ? (
+              bartender.skills.map((skill, i) => (
+                <span
+                  key={i}
+                  className="px-3 py-1 text-xs rounded-full bg-[#822CE71A] text-[#822CE7]"
+                >
+                  {skill}
+                </span>
+              ))
+            ) : (
+              <span className="text-gray-400 text-xs">No skills added</span>
+            )}
+          </div>
           </div>
 
           <div>
