@@ -58,7 +58,9 @@ const handleSubmit = async (e) => {
 
     const accessToken = res?.data?.accessToken;
     const role = res?.data?.role;
-console.log(role)
+
+    console.log(role);
+
     // only allow venueOwner & superAdmin
     if (role !== "venueOwner" && role !== "superAdmin") {
       message.error("You are not authorized to login!");
@@ -81,16 +83,16 @@ console.log(role)
       localStorage.removeItem("loginData");
     }
 
-    // role based redirect
+    message.success(res?.message || "Login successful");
+
+    // redirect with full reload
     if (role === "venueOwner") {
-      navigate("/");
+      window.location.href = "/";
     }
 
     if (role === "superAdmin") {
-      navigate("/admin");
+      window.location.href = "/admin";
     }
-
-    message.success(res?.message || "Login successful");
 
   } catch (err) {
     console.error(err);

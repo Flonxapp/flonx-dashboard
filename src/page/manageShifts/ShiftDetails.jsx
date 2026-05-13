@@ -15,6 +15,7 @@ const ShiftDetails = () => {
   const { id } = useParams();
 
   const { data: singleShiftData, isLoading } = useGetSingleShiftsQuery({ id });
+  console.log(singleShiftData)
 const [openAddModal, setOpenAddModal] = useState(false);
   const [updateShiftRequest, { isLoading: rejectLoading }] =
     useDeclinedShiftRequestMutation();
@@ -90,7 +91,7 @@ const [openAddModal, setOpenAddModal] = useState(false);
 
           <div>
             <p className="text-gray-400 italic">Shift Rate</p>
-            <p>$0</p>
+            <p>{shift?.shiftRate}$ Hourly</p>
           </div>
 
           <div>
