@@ -1,23 +1,12 @@
 import { createBrowserRouter } from "react-router-dom";
+import ProtectedRoute from "../protectedRoute/ProtectedRoute";
+
+// Layout
 import DashboardLayout from "../layout/dashboardLayout/DashboardLayout";
+
+// Owner Pages
 import Dashboard from "../components/Dashboard/Dashboard";
-import UserManagement from "../page/UserManagement/UserManagement";
-
-
-
-import Profile from "../page/Settings/Profile";
-import TermsCondition from "../page/Settings/TermsCondition";
-import FAQ from "../page/Settings/FAQ";
-import PrivacyPolicy from "../page/Settings/PrivacyPolicy";
 import Categories from "../page/CategoriesManagement/Categories";
-import Subcategory from "../page/CategoriesManagement/Subcategory";
-
-import ForgetPass from "../Auth/ForgetPass";
-import Verify from "../Auth/Verify";
-import ResetPass from "../Auth/ResetPass";
-import Notification from "../page/Notification/Notification";
-import About from "../page/Settings/About";
-import Login from "../Auth/Login";
 import ProductManage from "../page/product/ProductManage";
 import ManageShifts from "../page/manageShifts/ManageShifts";
 import Earning from "../page/earning/Earning";
@@ -29,199 +18,265 @@ import AddProduct from "../page/product/AddProduct";
 import EditProduct from "../page/product/EditProduct";
 import ShiftDetails from "../page/manageShifts/ShiftDetails";
 import AddManageShift from "../page/manageShifts/AddManageShift";
+import FindBarthender from "../page/manageShifts/FindBarthender";
+import BartenderDetails from "../page/manageShifts/BartenderDetails";
 import UpdateVenyeProfile from "../page/venuwProfile/UpdateVenyeProfile";
 import UpdateProfile from "../page/manageProfile/UpdateProfile";
 import UpdatePassword from "../page/manageProfile/UpdatePassword";
-import FindBarthender from "../page/manageShifts/FindBarthender";
-import BartenderDetails from "../page/manageShifts/BartenderDetails";
+import Notification from "../page/Notification/Notification";
+
+// Admin Pages
+import DashboardAdmin from "../adminRotePage/Dashboard/Dashboard";
+import UserManagement from "../adminRotePage/UserManagement/UserManagement";
+import Bartenders from "../adminRotePage/bartenders/Bartenders";
+import UserDetails from "../adminRotePage/UserManagement/UserDetails";
+import VenueOwner from "../adminRotePage/venueOwner/VenueOwner";
+import VenueOwnerDetails from "../adminRotePage/venueOwner/VenueOwnerDetails";
+import LegalCompany from "../adminRotePage/legalCompany/LegalCompany";
+import AddLegalCompany from "../adminRotePage/legalCompany/AddLegalCompany";
+import TermsCondition from "../adminRotePage/terms/TermsCondition";
+import PrivacyPolicy from "../adminRotePage/privecy/PrivacyPolicy";
+import HelpSupportAdmin from "../adminRotePage/helpSupport/HelpSupport";
+import HelpSupportDetails from "../adminRotePage/helpSupport/HelpSupportDetails";
+import EarningAdmin from "../adminRotePage/earning/Earning";
+import ManageProfileAdmin from "../adminRotePage/manageProfile/ManageProfile";
+import UpdateProfileAdmin from "../adminRotePage/manageProfile/UpdateProfile";
+import UpdatePasswordAdmin from "../adminRotePage/manageProfile/UpdatePassword";
+import NotificationAdmin from "../adminRotePage/Notification/Notification";
+
+// Auth
+import Login from "../Auth/Login";
+import LoginAdmin from "../adminAuth/Login";
 import JoinAs from "../Auth/JoinAs";
 import CompleteProfile from "../Auth/CompleteProfile";
 import ConnectStripe from "../Auth/ConnectStripe";
+import ForgetPass from "../Auth/ForgetPass";
+import Verify from "../Auth/Verify";
+import ResetPass from "../Auth/ResetPass";
 import RegisterVerify from "../Auth/RegisterVerify";
-import MyShifts from "../page/myShift/MyShifts";
-
-import MyProfile from "../page/bartenderProfile/MyProfile";
-
-import ProtectedRoute from "../protectedRoute/ProtectedRoute";
-
-
 
 export const router = createBrowserRouter([
   {
     path: "/",
+
+  
     element: (
-      <ProtectedRoute><DashboardLayout></DashboardLayout>
+      <ProtectedRoute allowedRoles={["venueOwner"]}>
+        <DashboardLayout />
       </ProtectedRoute>
     ),
+
     children: [
       {
-        path: "/",
-        element: <Dashboard></Dashboard>,
-      },
-      {
-        path: "/dashboard/UserManagement",
-        element: <UserManagement></UserManagement>,
-      },
-     {
-        path: "/dashboard/productManagement",
-        element: <ProductManage></ProductManage>,
+        index: true,
+        element: <Dashboard />,
       },
 
-       {
-        path: "/dashboard/shifts",
-        element: <MyShifts></MyShifts>
-      },
-     {
-        path: "/dashboard/VenueProfile",
-        element: <VenueProfile></VenueProfile>,
+      {
+        path: "dashboard/productManagement",
+        element: <ProductManage />,
       },
       {
-        path: "/dashboard/productManagement/details/:id",
-        element: <ProductDetails></ProductDetails>  ,
+        path: "dashboard/productManagement/details/:id",
+        element: <ProductDetails />,
       },
       {
-        path: "/dashboard/ManageShifts",
-        element: <ManageShifts></ManageShifts>,
-      },
-        {
-        path: "/dashboard/ManageShifts/add_request/:id",
-        element: <AddManageShift></AddManageShift>,
+        path: "dashboard/productManagement/add",
+        element: <AddProduct />,
       },
       {
-        path: "/dashboard/ManageShifts/find_bartender",
-        element: <FindBarthender></FindBarthender>,
-      },
-      {
-
-        path: "/dashboard/ManageShifts/details/:id",
-        element: <ShiftDetails></ShiftDetails>,
-      },
-        {
-
-        path: "/dashboard/BartenderShifts/details/:id",
-        element: <BartenderDetails></BartenderDetails>,
-      },
-      {
-        path: "/dashboard/productManagement/add",
-        element: <AddProduct></AddProduct>,
-      },
-      {
-        path: "/dashboard/productManagement/edit/:id",
-        element: <EditProduct></EditProduct>,
-      },
-       {
-        path: "/dashboard/earning",
-        element: <Earning></Earning>,
-      },
-      
-        {
-        path: "/dashboard/myProfile",
-        element: <MyProfile></MyProfile>
-      },
-   
-      {
-        path: "/dashboard/UpdateVenueProfile/:id",
-        element: <UpdateVenyeProfile></UpdateVenyeProfile>,
-      },
-      {
-        path: "/dashboard/HelpSupport",
-        element: <HelpSupport></HelpSupport>,
-      },
-      {
-        path: "/dashboard/ManageProfile",
-        element: <ManageProfile></ManageProfile>,
+        path: "dashboard/productManagement/edit/:id",
+        element: <EditProduct />,
       },
 
+      {
+        path: "dashboard/ManageShifts",
+        element: <ManageShifts />,
+      },
+      {
+        path: "dashboard/ManageShifts/add_request/:id",
+        element: <AddManageShift />,
+      },
+      {
+        path: "dashboard/ManageShifts/find_bartender",
+        element: <FindBarthender />,
+      },
+      {
+        path: "dashboard/ManageShifts/details/:id",
+        element: <ShiftDetails />,
+      },
+      {
+        path: "dashboard/BartenderShifts/details/:id",
+        element: <BartenderDetails />,
+      },
 
-  {
-        path: "/dashboard/updateProfile",
-        element: <UpdateProfile></UpdateProfile>,
+      {
+        path: "dashboard/earning",
+        element: <Earning />,
+      },
+      {
+        path: "dashboard/VenueProfile",
+        element: <VenueProfile />,
+      },
+      {
+        path: "dashboard/UpdateVenueProfile/:id",
+        element: <UpdateVenyeProfile />,
       },
 
-
-        {
-        path: "/dashboard/updatePassword",
-        element: <UpdatePassword> </UpdatePassword>,
-      },
-
-
-
-
-
       {
-        path: "/dashboard/CategoriesManagement/Categories",
-        element: <Categories></Categories>,
+        path: "dashboard/HelpSupport",
+        element: <HelpSupport />,
       },
       {
-        path: "/dashboard/CategoriesManagement/Categories",
-        element: <Categories></Categories>,
+        path: "dashboard/ManageProfile",
+        element: <ManageProfile />,
       },
       {
-        path: "/dashboard/CategoriesManagement/Subcategory",
-        element: <Subcategory></Subcategory>,
-      },
-     
-      {
-        path: "/dashboard/Settings/profile",
-        element: <Profile></Profile>,
+        path: "dashboard/updateProfile",
+        element: <UpdateProfile />,
       },
       {
-        path: "/dashboard/Settings/profile",
-        element: <Profile></Profile>,
+        path: "dashboard/updatePassword",
+        element: <UpdatePassword />,
       },
       {
-        path: "/dashboard/Settings/notification",
-        element: <Notification></Notification>,
+        path: "dashboard/CategoriesManagement/Categories",
+        element: <Categories />,
       },
       {
-        path: "/dashboard/Settings/Terms&Condition",
-        element: <TermsCondition></TermsCondition>,
-      },
-      {
-        path: "/dashboard/Settings/FAQ",
-        element: <FAQ></FAQ>,
-      },
-      {
-        path: "/dashboard/Settings/aboutUs",
-        element: <About></About>,
-      },
-      {
-        path: "/dashboard/Settings/PrivacyPolicy",
-        element: <PrivacyPolicy></PrivacyPolicy>,
+        path: "dashboard/Settings/notification",
+        element: <Notification />,
       },
     ],
   },
 
+  // ================= ADMIN =================
+
+  {
+    path: "/admin",
+
+    element: (
+      <ProtectedRoute allowedRoles={["superAdmin"]}>
+        <DashboardLayout />
+      </ProtectedRoute>
+    ),
+
+    children: [
+      {
+        index: true,
+        element: <DashboardAdmin />,
+      },
+
+      {
+        path: "dashboard/UserManagement",
+        element: <UserManagement />,
+      },
+      {
+        path: "dashboard/UserManagement/details/:id",
+        element: <UserDetails />,
+      },
+
+      {
+        path: "dashboard/bartenders",
+        element: <Bartenders />,
+      },
+
+      {
+        path: "dashboard/venue_owner",
+        element: <VenueOwner />,
+      },
+      {
+        path: "dashboard/venue_owner/details/:id",
+        element: <VenueOwnerDetails />,
+      },
+
+      {
+        path: "dashboard/LegalCompany",
+        element: <LegalCompany />,
+      },
+      {
+        path: "dashboard/LegalCompany/add",
+        element: <AddLegalCompany />,
+      },
+
+      {
+        path: "dashboard/earning",
+        element: <EarningAdmin />,
+      },
+
+      {
+        path: "dashboard/HelpSupport",
+        element: <HelpSupportAdmin />,
+      },
+      {
+        path: "dashboard/HelpSupport/details/:id",
+        element: <HelpSupportDetails />,
+      },
+
+      {
+        path: "dashboard/TermsCondition",
+        element: <TermsCondition />,
+      },
+      {
+        path: "dashboard/PrivacyPolicy",
+        element: <PrivacyPolicy />,
+      },
+
+      {
+        path: "dashboard/ManageProfile",
+        element: <ManageProfileAdmin />,
+      },
+      {
+        path: "dashboard/updateProfile/:id",
+        element: <UpdateProfileAdmin />,
+      },
+      {
+        path: "dashboard/updatePassword",
+        element: <UpdatePasswordAdmin />,
+      },
+      {
+        path: "dashboard/Settings/notification",
+        element: <NotificationAdmin />,
+      },
+    ],
+  },
+
+  // ================= AUTH =================
+
   {
     path: "/login",
-    element: <Login></Login>,
+    element: <Login />,
+  },
+  {
+    path: "/admin/login",
+    element: <LoginAdmin />,
   },
   {
     path: "/joinAs",
-    element: <JoinAs></JoinAs>,
+    element: <JoinAs />,
   },
-   {
+  {
     path: "/completeProfile",
-    element: <CompleteProfile></CompleteProfile>,
+    element: <CompleteProfile />,
   },
-   {
+  {
     path: "/connectStripe",
-    element: <ConnectStripe></ConnectStripe>,
+    element: <ConnectStripe />,
   },
   {
     path: "/forgot-password",
-    element: <ForgetPass></ForgetPass>,
+    element: <ForgetPass />,
   },
-   {
+  {
     path: "/registerVerify",
-    element: <RegisterVerify></RegisterVerify>,
+    element: <RegisterVerify />,
   },
   {
     path: "/verification",
-    element: <Verify></Verify>,
+    element: <Verify />,
   },
   {
     path: "/reset-password",
-    element: <ResetPass></ResetPass>,
+    element: <ResetPass />,
   },
 ]);

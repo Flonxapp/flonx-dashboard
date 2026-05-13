@@ -150,7 +150,7 @@ const support = baseApi.injectEndpoints({
 });
 
 export const {
-  useCreateSupportMutation,useGetTermsConditionsQuery,usePostPrivecyMutation, usePostTermsConditionMutation, useGetDahboardTotalQuery,useGetDahboardActivityQuery
+  useCreateSupportMutation,useGetTermsConditionsQuery,usePostPrivecyMutation, usePostTermsConditionMutation
   
 
 } = support;

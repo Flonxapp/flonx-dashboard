@@ -1,19 +1,9 @@
-import dashboard from "../../assets/routerImg/dashboard.png";
-import categorie from "../../assets/routerImg/categorie.png";
-import create from "../../assets/routerImg/create.png";
-import settings from "../../assets/routerImg/settings.png";
-import subscription from "../../assets/routerImg/subscription.png";
-import user from "../../assets/routerImg/user.png";
 import logo from "../../assets/header/logo.png";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
-import { FaChevronRight, FaHome } from "react-icons/fa";
-import { IoIosLogIn } from "react-icons/io";
-import { logout } from "../../page/redux/features/auth/authSlice";
+import { useEffect, useRef, useState, useMemo } from "react";
+import { FaChevronRight } from "react-icons/fa";
 import { useDispatch } from "react-redux";
-import { FiUser } from "react-icons/fi";
-import { IoSettingsOutline } from "react-icons/io5";
-import { TbCategory2 } from "react-icons/tb";
+
 import CategoryIco from "../icon/CategoryIco";
 import ProductIco from "../icon/ProductIco";
 import ShiftsIco from "../icon/ShiftsIco";
@@ -23,9 +13,79 @@ import ManageProfileIco from "../icon/ManageProfileIco";
 import SupportIco from "../icon/SupportIco";
 import DashboardIco from "../icon/DashboardIco";
 import LogOutIco from "../icon/LogOutIco";
+import TermsIco from "../icon/TermsIco";
+import PrivecyIco from "../icon/PrivecyIco";
+import LegalIco from "../icon/LegalIco";
 
+import { useGetProfileQuery } from "../../page/redux/api/userApi";
+import { logout } from "../../page/redux/features/auth/authSlice";
 
-const items = [
+/* ---------------- ADMIN ITEMS ---------------- */
+const adminItems = [
+  {
+    key: "dashboard",
+    label: "Dashboard",
+    icon: <DashboardIco />,
+    link: "/admin",
+  },
+  {
+    key: "userManagement",
+    label: "Users",
+    icon: <CategoryIco color={"white"} />,
+    link: "/admin/dashboard/UserManagement",
+  },
+  {
+    key: "bartenderManagement",
+    label: "Bartenders",
+    icon: <ProductIco color={"white"} />,
+    link: "/admin/dashboard/bartenders",
+  },
+  {
+    key: "venueOwnerManagement",
+    label: "Venue Owners",
+    icon: <ShiftsIco color={"white"} />,
+    link: "/admin/dashboard/venue_owner",
+  },
+  {
+    key: "earning",
+    label: "Earning",
+    icon: <EarningIco color={"white"} />,
+    link: "/admin/dashboard/earning",
+  },
+  {
+    key: "helpSupport",
+    label: "Help & Support",
+    icon: <SupportIco />,
+    link: "/admin/dashboard/HelpSupport",
+  },
+  {
+    key: "termsCondition",
+    label: "Terms & Condition",
+    icon: <TermsIco />,
+    link: "/admin/dashboard/TermsCondition",
+  },
+  {
+    key: "privacyPolicy",
+    label: "Privacy Policy",
+    icon: <PrivecyIco />,
+    link: "/admin/dashboard/PrivacyPolicy",
+  },
+  {
+    key: "legalCompany",
+    label: "Legal & Company Info",
+    icon: <LegalIco />,
+    link: "/admin/dashboard/LegalCompany",
+  },
+  {
+    key: "manageProfile",
+    label: "Manage Profile",
+    icon: <ManageProfileIco />,
+    link: "/admin/dashboard/ManageProfile",
+  },
+];
+
+/* ---------------- VENUE OWNER ITEMS ---------------- */
+const venueOwnerItems = [
   {
     key: "dashboard",
     label: "Dashboard",
@@ -35,63 +95,72 @@ const items = [
   {
     key: "categoryManagement",
     label: "Manage Categories",
-    icon: <CategoryIco color={'white'}></CategoryIco>,
+    icon: <CategoryIco color={"white"} />,
     link: "/dashboard/CategoriesManagement/Categories",
   },
-
-{
+  {
     key: "productManagement",
     label: "Product Management",
-    icon: <ProductIco color={'white'}></ProductIco>,
+    icon: <ProductIco color={"white"} />,
     link: "/dashboard/productManagement",
   },
-{
+  {
     key: "manageShifts",
     label: "Manage Shifts",
-    icon: <ShiftsIco color={'white'}></ShiftsIco>,
+    icon: <ShiftsIco color={"white"} />,
     link: "/dashboard/ManageShifts",
   },
-{
+  {
     key: "earning",
     label: "Earning",
-    icon: <EarningIco color={'white'}></EarningIco>,
+    icon: <EarningIco color={"white"} />,
     link: "/dashboard/earning",
   },
-
   {
     key: "venueProfile",
     label: "Venue Profile",
-    icon: <BarProfileIco color={'white'}></BarProfileIco>,
+    icon: <BarProfileIco color={"white"} />,
     link: "/dashboard/VenueProfile",
   },
-
   {
     key: "manageProfile",
     label: "Manage Profile",
     icon: <ManageProfileIco />,
     link: "/dashboard/ManageProfile",
   },
-
   {
     key: "helpSupport",
     label: "Help & Support",
     icon: <SupportIco />,
     link: "/dashboard/HelpSupport",
   },
-
-
-  
 ];
 
 const SidBar = () => {
+  const { data: adminProfile, isLoading: profileLoading } =
+    useGetProfileQuery();
+
+  const role = adminProfile?.data?.user?.role;
+
+  const items = useMemo(() => {
+    if (role === "superAdmin") return adminItems;
+    if (role === "venueOwner") return venueOwnerItems;
+    return [];
+  }, [role]);
+
   const [selectedKey, setSelectedKey] = useState("dashboard");
   const [expandedKeys, setExpandedKeys] = useState([]);
+
   const location = useLocation();
   const navigate = useNavigate();
-  const contentRef = useRef({});
   const dispatch = useDispatch();
 
+  const contentRef = useRef({});
+
+  /* ---------------- ACTIVE MENU ---------------- */
   useEffect(() => {
+    if (!items.length) return;
+
     const currentPath = location.pathname;
 
     let activeParent = null;
@@ -108,117 +177,67 @@ const SidBar = () => {
     });
 
     if (activeParent) {
-      setSelectedKey(
-        activeParent.children
-          ? activeParent.children.find((child) => child.link === currentPath)
-              ?.key || activeParent.key
-          : activeParent.key
-      );
-
-      if (activeParent.children && !expandedKeys.includes(activeParent.key)) {
-        setExpandedKeys([...expandedKeys, activeParent.key]);
-      }
+      setSelectedKey(activeParent.key);
     }
-  }, [location]);
+  }, [location.pathname, items]);
 
   const onParentClick = (key) => {
     setExpandedKeys((prev) =>
-      prev.includes(key) ? prev.filter((item) => item !== key) : [...prev, key]
+      prev.includes(key)
+        ? prev.filter((item) => item !== key)
+        : [...prev, key]
     );
   };
 
-  // Logout Function
   const handleLogout = () => {
     dispatch(logout());
     navigate("/login");
   };
 
+  if (profileLoading) return null;
+
   return (
     <div className="custom-sidebar h-[100vh] bg-[#0F0B1A] text-white border-r border-[#2A2448] flex flex-col justify-between">
-  
-  {/* Top: Logo + Menu */}
-  <div>
-    <div className="custom-sidebar-logo py-8 flex justify-center">
-      <img src={logo} alt="Logo" className="w-[130px]" />
-    </div>
 
-    <div className="menu-items overflow-auto px-2">
-      {items.map((item) => (
-        <div key={item.key}>
-          <Link
-            to={item.link}
-            className={`my-4 py-[10px] px-4 flex items-center cursor-pointer ${
-              selectedKey === item.key
-                ? "bg-gradient-to-tr from-[#822CE7] to-[#BB82FF] text-white shadow-md mx-3 rounded-lg"
-                : "hover:bg-gradient-to-tr hover:from-[#822CE7] mx-3 rounded-lg"
-            }`}
-            onClick={(e) => {
-              if (item.children) {
-                e.preventDefault();
-                onParentClick(item.key);
-              } else {
-                setSelectedKey(item.key);
-              }
-            }}
-          >
-            <span className="w-5 mr-2 text-lg">{item.icon}</span>
-            <span className="w-full">{item.label}</span>
-
-            {item.children && (
-              <FaChevronRight
-                className={`ml-auto text-[10px] transition-transform duration-300 ${
-                  expandedKeys.includes(item.key) ? "rotate-90" : ""
-                }`}
-              />
-            )}
-          </Link>
-
-          {item.children && (
-            <div
-              className="ml-6 mx-2 overflow-hidden transition-all duration-300"
-              style={{
-                maxHeight: expandedKeys.includes(item.key)
-                  ? `${contentRef.current[item.key]?.scrollHeight}px`
-                  : "0",
-              }}
-              ref={(el) => (contentRef.current[item.key] = el)}
-            >
-              {item.children.map((child) => (
-                <Link
-                  key={child.key}
-                  to={child.link}
-                  className={`p-2 flex items-center ${
-                    selectedKey === child.key
-                      ? "text-red-500"
-                      : "hover:bg-gradient-to-r hover:from-[#470e0e]"
-                  }`}
-                  onClick={() => setSelectedKey(child.key)}
-                >
-                  {child.label}
-                </Link>
-              ))}
-            </div>
-          )}
+      {/* TOP */}
+      <div>
+        <div className="py-8 flex justify-center">
+          <img src={logo} alt="Logo" className="w-[130px]" />
         </div>
-      ))}
-    </div>
-  </div>
 
-  {/* Bottom: Logout Button */}
-  <div className="mx-4 mb-4">
-    <div className="border-[#EF4444] bg-[#dc354621] rounded-xl w-full p-3 border">
-      <button
-        onClick={handleLogout}
-        className="flex items-center text-white text-start rounded-md w-full"
-      >
-        <span className="text-2xl">
-          <LogOutIco></LogOutIco>
-        </span>
-        <span className="ml-3">Log Out</span>
-      </button>
+        <div className="menu-items overflow-auto px-2">
+          {items.map((item) => (
+            <div key={item.key}>
+              <Link
+                to={item.link}
+                className={`my-3 py-2 px-4 flex items-center rounded-lg ${
+                  selectedKey === item.key
+                    ? "bg-gradient-to-tr from-[#822CE7] to-[#BB82FF]"
+                    : "hover:bg-[#2a2448]"
+                }`}
+                onClick={() => setSelectedKey(item.key)}
+              >
+                <span className="mr-2">{item.icon}</span>
+                <span className="w-full">{item.label}</span>
+              </Link>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* BOTTOM */}
+      <div className="mx-4 mb-4">
+        <div className="border-[#EF4444] bg-[#dc354621] rounded-xl p-3 border">
+          <button
+            onClick={handleLogout}
+            className="flex items-center w-full text-white"
+          >
+            <LogOutIco />
+            <span className="ml-3">Log Out</span>
+          </button>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
   );
 };
 

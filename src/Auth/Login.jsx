@@ -7,80 +7,96 @@ import { setToken } from "../page/redux/features/auth/authSlice";
 
 const Login = () => {
   const [login, { isLoading }] = useLoginAdminMutation();
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const [showPassword, setShowPassword] = useState(false);
+
   const [formValues, setFormValues] = useState({
     email: "",
     password: "",
     remember: false,
   });
 
-  const [showPassword, setShowPassword] = useState(false);
-
-  // ✅ Load saved data from localStorage
+  // Load remember me data
   useEffect(() => {
     const savedData = localStorage.getItem("loginData");
 
     if (savedData) {
-      const parsed = JSON.parse(savedData);
+      const parsedData = JSON.parse(savedData);
+
       setFormValues({
-        email: parsed.email || "",
-        password: parsed.password || "",
+        email: parsedData.email || "",
+        password: parsedData.password || "",
         remember: true,
       });
     }
   }, []);
 
-  // ✅ Handle input change
+  // Handle input change
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
+
     setFormValues((prev) => ({
       ...prev,
       [name]: type === "checkbox" ? checked : value,
     }));
   };
 
-  // ✅ Submit
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  // Login submit
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    try {
-      const res = await login({
-        email: formValues.email,
-        password: formValues.password,
-      }).unwrap();
+  try {
+    const res = await login({
+      email: formValues.email,
+      password: formValues.password,
+    }).unwrap();
 
-      const role = res?.data?.role;
+    console.log(res);
 
-      // ✅ Role check
-      if (role === "venueOwner") {
-        dispatch(setToken(res?.data?.accessToken));
-
-        console.log("Login Success:", res);
-        navigate("/");
-        message.success(res?.message);
-
-        // remember me
-        if (formValues.remember) {
-          localStorage.setItem(
-            "loginData",
-            JSON.stringify({
-              email: formValues.email,
-              password: formValues.password,
-            }),
-          );
-        } else {
-          localStorage.removeItem("loginData");
-        }
-      } else {
-        message.error("You are not authorized to login!");
-      }
-    } catch (err) {
-      message.error(err?.data?.message || "Login failed");
-      console.error("Login Error:", err);
+    const accessToken = res?.data?.accessToken;
+    const role = res?.data?.role;
+console.log(role)
+    // only allow venueOwner & superAdmin
+    if (role !== "venueOwner" && role !== "superAdmin") {
+      message.error("You are not authorized to login!");
+      return;
     }
-  };
 
+    // save token
+    dispatch(setToken(accessToken));
+
+    // remember me
+    if (formValues.remember) {
+      localStorage.setItem(
+        "loginData",
+        JSON.stringify({
+          email: formValues.email,
+          password: formValues.password,
+        })
+      );
+    } else {
+      localStorage.removeItem("loginData");
+    }
+
+    // role based redirect
+    if (role === "venueOwner") {
+      navigate("/");
+    }
+
+    if (role === "superAdmin") {
+      navigate("/admin");
+    }
+
+    message.success(res?.message || "Login successful");
+
+  } catch (err) {
+    console.error(err);
+    message.error(err?.data?.message || "Login failed");
+  }
+};
   return (
     <div className="flex font-nunito justify-center items-center min-h-screen px-4 lg:px-0 bg-[#0F0B1A]">
       <div className="w-full max-w-lg lg:p-8 p-4 border border-[#2A2448] rounded-lg bg-[#822CE71A]">

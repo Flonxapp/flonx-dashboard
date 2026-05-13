@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Navigate } from "../../Navigate";
 
-const PassWordChange = () => {
+const UpdatePassword = () => {
   const [formValues, setFormValues] = useState({
     oldPassword: "",
     newPassword: "",
@@ -36,13 +36,17 @@ const PassWordChange = () => {
 
   return (
     <div className="p-3 h-[87vh] overflow-auto">
-      <div className="flex items-center py-4 ">
-               <Navigate></Navigate>
-               <h1 className="text-[16px] italic text-white font-montserrat">Account Setting </h1>
-             </div>
-      <div className="">
-     
-        <div className="">
+      <Navigate title="Manage Profile" />
+
+      <div className="mt-6 border text-white border-[#2A2448] rounded-xl space-y-3">
+        <div className="border-b border-[#2A2448] p-3">
+          <h1 className="text-xl font-semibold pb-1">Update Password</h1>
+          <p className="text-[#C9C6D6]">
+            Change your password to keep your account secure.
+          </p>
+        </div>
+
+        <div className="p-4">
           <form onSubmit={handleSubmit} className="space-y-4">
             
             {/* Old Password */}
@@ -56,7 +60,7 @@ const PassWordChange = () => {
                 value={formValues.oldPassword}
                 onChange={handleChange}
                 placeholder="Enter old password"
-                className="w-full px-3 py-2 bg-[#1D1733] border border-[#2A2448] text-white rounded-full focus:outline-none focus:ring-2 focus:ring-[#822CE7] placeholder-white/70"
+                className="w-full px-3 py-2 bg-[#1D1733] border border-[#2A2448] text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#822CE7] placeholder-white/70"
                 required
               />
             </div>
@@ -72,7 +76,7 @@ const PassWordChange = () => {
                 value={formValues.newPassword}
                 onChange={handleChange}
                 placeholder="Enter new password"
-                className="w-full px-3 py-2 bg-[#1D1733] border border-[#2A2448] text-white rounded-full focus:outline-none focus:ring-2 focus:ring-[#822CE7] placeholder-white/70"
+                className="w-full px-3 py-2 bg-[#1D1733] border border-[#2A2448] text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#822CE7] placeholder-white/70"
                 required
               />
             </div>
@@ -88,7 +92,7 @@ const PassWordChange = () => {
                 value={formValues.confirmPassword}
                 onChange={handleChange}
                 placeholder="Confirm new password"
-                className="w-full px-3 py-2 bg-[#1D1733] border border-[#2A2448] text-white rounded-full focus:outline-none focus:ring-2 focus:ring-[#822CE7] placeholder-white/70"
+                className="w-full px-3 py-2 bg-[#1D1733] border border-[#2A2448] text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#822CE7] placeholder-white/70"
                 required
               />
             </div>
@@ -96,7 +100,7 @@ const PassWordChange = () => {
             {/* Submit Button */}
             <button
               type="submit"
-              className="bg-gradient-to-tr w-full from-[#822CE7] to-[#BB82FF] text-white shadow-md px-3 py-2 rounded-full"
+              className="bg-gradient-to-tr w-[185px] from-[#822CE7] to-[#BB82FF] text-white shadow-md px-3 py-2 rounded-full"
             >
               Update Password
             </button>
@@ -107,4 +111,4 @@ const PassWordChange = () => {
   );
 };
 
-export default PassWordChange;
+export default UpdatePassword;

@@ -106,6 +106,7 @@ const Header = () => {
   const navigate = useNavigate();
  const { data: adminProfile, isLoading: profileLoading } =
     useGetProfileQuery();
+    console.log(adminProfile)
   const contentRef = useRef({});
 
   const onParentClick = (key) => {
@@ -280,7 +281,7 @@ const Header = () => {
               </div>
               <div className=" text-white italic">
                 <h3>{adminProfile?.data?.name}</h3>
-                <h4 className="bg-[#22C55E33] px-2 text-[#22C55E] rounded-full ">Venue Owner</h4>
+                <h4 className="bg-[#22C55E33] px-2 text-[#22C55E] rounded-full ">{adminProfile?.data?.user?.role}</h4>
               </div>
             </div>
        

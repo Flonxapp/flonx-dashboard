@@ -1,53 +1,55 @@
-import React from "react";
-import { Table } from "antd";
-import { LuEye } from "react-icons/lu";
-import EyeIco from "../icon/EyeIco";
+import React, { useState } from "react";
+import { Input, Pagination, Select, Table } from "antd";
+import { Navigate } from "../../Navigate";
+import AddIco from "../../components/icon/AddIco";
+import EyeIco from "../../components/icon/EyeIco";
 import { Link } from "react-router-dom";
 
+import { FaChevronDown } from "react-icons/fa";
+import { useGetAllShiftQuery } from "../../page/redux/api/manageShiftApi";
+
+const { Option } = Select;
+
 const RecentShifts = () => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [status, setStatus] = useState(undefined);
 
-  const showModal2 = (record) => {
-    console.log("View:", record);
-  };
+  const pageSize = 10;
 
-  const paginatedUsers = [
-    {
-      key: 1,
-      no: 1,
-      name: "John Doe",
-      email: "john@example.com",
-      image: "https://i.pravatar.cc/100?img=1",
-      requestedOn: "12 Jun 2026",
-      shiftDate: "15 Jun 2026",
-      status: "Completed",
-    },
-    {
-      key: 2,
-      no: 2,
-      name: "Jane Smith",
-      email: "jane@example.com",
-      image: "https://i.pravatar.cc/100?img=2",
-      requestedOn: "10 Jun 2026",
-      shiftDate: "14 Jun 2026",
-      status: "Completed",
-    },
-  ];
+  // ✅ API CALL FIX
+  const { data: manageShiftData } = useGetAllShiftQuery({
+    page: 1,
+    limit: 1000,
+  });
+
+  const shifts =
+    manageShiftData?.data?.result?.slice(0, 5).map((item, index) => ({
+      key: item._id,
+      no: (currentPage - 1) * pageSize + index + 1,
+      name: item?.bartender?.name,
+      email: item?.bartender?.email,
+      requestedOn: new Date(item?.createdAt).toLocaleDateString(),
+      shiftDate: new Date(item?.startDateTime).toLocaleDateString(),
+      status: item?.status,
+      image:
+        item?.bartender?.profile_image ||
+        `https://i.pravatar.cc/150?img=${index + 10}`,
+    })) || [];
 
   const columns = [
     {
       title: "No",
       dataIndex: "no",
-      key: "no",
     },
     {
       title: "Bartender",
-      key: "bartender",
       render: (_, record) => (
         <div className="flex items-center gap-3">
           <img
             src={record.image}
             className="w-10 h-10 object-cover rounded-full"
-            alt="Bartender"
+            alt=""
           />
           <span>{record.name}</span>
         </div>
@@ -56,27 +58,23 @@ const RecentShifts = () => {
     {
       title: "Email",
       dataIndex: "email",
-      key: "email",
     },
     {
       title: "Requested On",
       dataIndex: "requestedOn",
-      key: "requestedOn",
     },
     {
       title: "Shift Date",
       dataIndex: "shiftDate",
-      key: "shiftDate",
     },
     {
       title: "Status",
-      key: "status",
       render: (_, record) => (
         <span
-          className={`px-3 py-1 rounded-full italic text-sm ${
+          className={`px-3 py-1 italic rounded-full text-xs ${
             record.status === "Approved"
-              ? "bg-[#3D8BFF33] text-[#3D8BFF]"
-              : "bg-[#3D8BFF33] text-[#3D8BFF]"
+              ? "bg-green-500/20 text-green-400"
+              : "bg-yellow-500/20 text-yellow-400"
           }`}
         >
           {record.status}
@@ -85,35 +83,36 @@ const RecentShifts = () => {
     },
     {
       title: "Action",
-      key: "action",
+      align: "end",
       render: (_, record) => (
-        <Link to={`/dashboard/ManageShifts/details/${record.key}`}>
-          <button
-            className="text-xl text-blue-500"
-            onClick={() => showModal2(record)}
-          >
-            <EyeIco />
-        </button></Link>
+        <div className="flex justify-end">
+          <Link to={`/dashboard/ManageShifts/details/${record.key}`}>
+            <button className="w-[36px] h-[36px] bg-[#22C55E1A] flex justify-center items-center text-[#22C55E] rounded">
+              <EyeIco />
+            </button>
+          </Link>
+        </div>
       ),
     },
   ];
 
   return (
-    <div>
-      <div className="flex pt-4 text-white justify-between items-center mb-4">
-        <h1 className="text-xl font-semibold font-nunito italic">Recent Shifts</h1>
-       <Link to={'/dashboard/ManageShifts'}>
-        <button className="text-[#3D8BFF] font-medium">View All</button></Link>
-      </div>
+    <div className="mt-5">
+      {/* Top */}
+      <h2 className="text-lg italic font-nunito pt-2 text-gray-300">
+        Recent Shift
+      </h2>
 
+      {/* Table */}
       <Table
-        dataSource={paginatedUsers}
+        dataSource={shifts}
         columns={columns}
         pagination={false}
-        scroll={{ x: "max-content" }}
         rowKey="key"
         className="custom-table"
       />
+
+      {/* Pagination */}
     </div>
   );
 };
