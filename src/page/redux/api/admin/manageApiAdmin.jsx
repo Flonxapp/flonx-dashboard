@@ -1,23 +1,105 @@
-import { baseApi } from "./baseApi";
+import { baseApi } from "../baseApi";
 
-const support = baseApi.injectEndpoints({
+
+const manageApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
+    getDahboardTotalAdmin: builder.query({
+      query: () => {
+        return {
+          url: "/meta/get-meta-data",
+          method: "GET",
+        };
+      },
+      providesTags: ["terms"],
+    }),
 
 
+  getEarningsAdmin: builder.query({
+      query: () => {
+        return {
+          url: "/meta/admin-earning",
+          method: "GET",
+        };
+      },
+      providesTags: ["terms"],
+    }),
 
-    createSupport: builder.mutation({
+    getDahboardActivityAdmin: builder.query({
+      query: ({ fram }) => {
+        return {
+          url: `meta/get-activities?frame=${fram}`,
+          method: "GET",
+        };
+      },
+      providesTags: ["terms"],
+    }),
+
+    getTermsConditions: builder.query({
+      query: () => {
+        return {
+          url: "/manage/get-terms-conditions",
+          method: "GET",
+        };
+      },
+      providesTags: ["terms"],
+    }),
+    postTermsCondition: builder.mutation({
       query: (data) => {
         return {
-          url: "/support/create",
+          url: "/manage/add-terms-conditions",
           method: "POST",
           body: data,
         };
       },
-      invalidatesTags: ["support"],
+      invalidatesTags: ["terms"],
     }),
 
 
- getPrivecy: builder.query({
+
+
+    getOrderAdmin: builder.query({
+      query: ({ page, limit }) => {
+        return {
+          url: `/order/get-all-orders?page=${page}&limit=${limit}`,
+          method: "GET",
+        };
+      },
+      providesTags: ["terms"],
+    }),
+
+
+    getSupportAdmin: builder.query({
+      query: ({ page, limit }) => {
+        return {
+          url: `/support/get-all?page=${page}&limit=${limit}`,
+          method: "GET",
+        };
+      },
+      providesTags: ["terms"],
+    }),
+
+    getSingleSupportAdmin: builder.query({
+      query: ({ id }) => {
+        return {
+          url: `/support/get-single/${id}`,
+          method: "GET",
+        };
+      },
+      providesTags: ["terms"],
+    }),
+
+    updateMark: builder.mutation({
+      query: ({ id, data }) => {
+        return {
+          url: `/support/update-status/${id}`,
+          method: "PATCH",
+          body: data,
+        };
+      },
+      invalidatesTags: ["terms"],
+    }),
+
+    getPrivecy: builder.query({
       query: () => {
         return {
           url: "/manage/get-privacy-policy",
@@ -26,8 +108,27 @@ const support = baseApi.injectEndpoints({
       },
       providesTags: ["terms"],
     }),
+    addLegalCompany: builder.mutation({
+      query: (data) => {
+        return {
+          url: "/legal-info/add-update",
+          method: "POST",
+          body: data,
+        };
+      },
+      invalidatesTags: ["terms"],
+    }),
+    getLegalCompany: builder.query({
+      query: () => {
+        return {
+          url: "/legal-info/get",
+          method: "GET",
+        };
+      },
+      providesTags: ["terms"],
+    }),
 
-   postPrivecy: builder.mutation({
+    postPrivecy: builder.mutation({
       query: (data) => {
         return {
           url: "/manage/add-privacy-policy",
@@ -37,7 +138,6 @@ const support = baseApi.injectEndpoints({
       },
       invalidatesTags: ["terms"],
     }),
-
 
     // getAllProduct: builder.query({
     //   query: ({page,limit}) => {
@@ -59,19 +159,14 @@ const support = baseApi.injectEndpoints({
     //   providesTags: ["updateProfile"],
     // }),
 
-
-
     // deleteProduct: builder.mutation({
     //   query: (data) => ({
     //     url: `/admin/products`,
     //     method: "DELETE",
     //     body: {id:data},
     //   }),
-    //   invalidatesTags: ["updateProfile"],      
+    //   invalidatesTags: ["updateProfile"],
     // }),
-
-
-
 
     // updateProduct: builder.mutation({
     //   query: (data) => {
@@ -104,8 +199,6 @@ const support = baseApi.injectEndpoints({
     //    },
     //    providesTags: ["host"],
     //  }),
-
-
 
     //  getSingleHostreq: builder.query({
     //    query: ({ carId }) => {
@@ -150,7 +243,17 @@ const support = baseApi.injectEndpoints({
 });
 
 export const {
-  useCreateSupportMutation,useGetTermsConditionsQuery,usePostPrivecyMutation, usePostTermsConditionMutation
-  
-
-} = support;
+  useGetPrivecyQuery,
+  useGetTermsConditionsQuery,
+  usePostPrivecyMutation,
+  usePostTermsConditionMutation,
+useGetDahboardActivityAdminQuery,
+useGetDahboardTotalAdminQuery,
+  useGetSupportAdminQuery,
+  useGetLegalCompanyQuery,
+  useAddLegalCompanyMutation,
+  useGetSingleSupportAdminQuery,
+  useUpdateMarkMutation,
+  useGetOrderAdminQuery,
+  useGetEarningsAdminQuery,
+} = manageApi;

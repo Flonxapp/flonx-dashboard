@@ -8,16 +8,15 @@ import { PageLoader } from "../../components/Loading";
 const BartenderDetails = () => {
   const { id } = useParams();
 
-  const { data: bartenderDetails, isLoading } =
-    useGetSingleBartenderQuery({ id });
+  const { data: bartenderDetails, isLoading } = useGetSingleBartenderQuery({
+    id,
+  });
 
   const bartender = bartenderDetails?.data;
-console.log(bartender)
+  console.log(bartender);
   // ✅ Loading state
   if (isLoading) {
-    return (
-      <PageLoader></PageLoader>
-    );
+    return <PageLoader></PageLoader>;
   }
 
   return (
@@ -62,36 +61,33 @@ console.log(bartender)
 
           <div>
             <p className="text-gray-400">Primary Bar Skills</p>
-             <div className="flex flex-wrap gap-1">
-            {bartender?.skills?.length > 0 ? (
-              bartender.skills.map((skill, i) => (
-                <span
-                  key={i}
-                  className="px-3 py-1 text-xs rounded-full bg-[#822CE71A] text-[#822CE7]"
-                >
-                  {skill}
-                </span>
-              ))
-            ) : (
-              <span className="text-gray-400 text-xs">No skills added</span>
-            )}
-          </div>
+            <div className="flex flex-wrap gap-1">
+              {bartender?.skills?.length > 0 ? (
+                bartender.skills.map((skill, i) => (
+                  <span
+                    key={i}
+                    className="px-3 py-1 text-xs rounded-full bg-[#822CE71A] text-[#822CE7]"
+                  >
+                    {skill}
+                  </span>
+                ))
+              ) : (
+                <span className="text-gray-400 text-xs">No skills added</span>
+              )}
+            </div>
           </div>
 
           <div>
             <p className="text-gray-400 italic">Overall Rating</p>
             <p className="flex items-center gap-1">
               <FaStar className="text-yellow-400" />
-              {bartender?.averageRating || 0} (
-              {bartender?.totalRatings || 0})
+              {bartender?.averageRating || 0} ({bartender?.totalRatings || 0})
             </p>
           </div>
 
           <div className="col-span-2">
             <p className="text-gray-400 italic">Location</p>
-            <p>
-              {bartender?.address}
-            </p>
+            <p>{bartender?.address}</p>
           </div>
         </div>
       </div>
