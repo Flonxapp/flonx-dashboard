@@ -228,7 +228,7 @@ const handlePlaceChanged = () => {
               <button
                 type="submit"
                 disabled={updating}
-                className="py-3 px-4 rounded-full text-white bg-[#822CE7]"
+                className="py-3 px-4 mt-5 rounded-full text-white bg-[#822CE7]"
               >
                 {updating ? "Updating..." : "Update Profile"}
               </button>
