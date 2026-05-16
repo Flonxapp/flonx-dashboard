@@ -4,6 +4,7 @@ import { Navigate } from "../../Navigate";
 import LogoIco from "../../components/icon/LogoIco";
 
 const Notification = () => {
+  const { data: notificationData } = usegetnot;
   const [notifications, setNotifications] = useState([
     {
       id: 1,
@@ -41,12 +42,14 @@ const Notification = () => {
             className="border border-[#2A2448] rounded-lg p-3 hover:shadow-md transition duration-200"
           >
             <div className="flex items-center gap-3  justify-between">
-             <div className="border border-[#2A2448] bg-[#822CE71A] w-[50px] h-[50px] rounded-xl flex items-center justify-center">
-               <LogoIco></LogoIco>
-             </div>
+              <div className="border border-[#2A2448] bg-[#822CE71A] w-[50px] h-[50px] rounded-xl flex items-center justify-center">
+                <LogoIco></LogoIco>
+              </div>
               <div className="flex-1">
                 <div className="flex items-center justify-between mb-1">
-                  <h3 className="text-lg font-semibold text-white italic">{note.title}</h3>
+                  <h3 className="text-lg font-semibold text-white italic">
+                    {note.title}
+                  </h3>
                   <div className="flex items-center gap-1 text-sm text-gray-500">
                     <Clock className="w-4 h-4" />
                     {note.time}
