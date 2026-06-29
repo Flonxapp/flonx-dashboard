@@ -1,0 +1,49 @@
+name: Deploy React Dashboard to EC2
+
+on:
+  push:
+    branches:
+      - 'main'
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.15'
+
+      - name: Install Dependencies
+        run: npm install --frozen-lockfile
+
+      - name: Set environment variables from ENV_VARS_JSON
+        env:
+          ENV_VARS_JSON: ${{ secrets.ENV_VARS_JSON }}
+        run: |
+          echo "$ENV_VARS_JSON" | jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' >> $GITHUB_ENV
+
+      - name: Build Vite Project
+        run: npx vite build
+
+      - name: Set up SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Deploy to EC2
+        env:
+          EC2_HOST: ${{ secrets.EC2_HOST }}
+          EC2_USER: ${{ secrets.EC2_USER }}
+        run: |
+          ssh $EC2_USER@$EC2_HOST "mkdir -p ~/applications/dashboard/dist"
+          rsync -avz dist/ $EC2_USER@$EC2_HOST:~/applications/dashboard/dist/
+          ssh $EC2_USER@$EC2_HOST "sudo systemctl restart nginx"
