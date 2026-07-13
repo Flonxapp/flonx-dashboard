@@ -7,7 +7,10 @@ import { setToken } from "../page/redux/features/auth/authSlice";
 
 const Login = () => {
   const [login, { isLoading }] = useLoginAdminMutation();
+const hostname = window.location.hostname;
 
+const isAdminDomain = hostname === "admin.flonxapp.com";
+const isVenueDomain = hostname === "venue.flonxapp.com";
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -62,10 +65,16 @@ const handleSubmit = async (e) => {
     console.log(role);
 
     // only allow venueOwner & superAdmin
-    if (role !== "venueOwner" && role !== "superAdmin") {
-      message.error("You are not authorized to login!");
-      return;
-    }
+   // Role validation based on subdomain
+if (isAdminDomain && role !== "superAdmin") {
+  message.error("Only Super Admin can login here.");
+  return;
+}
+
+if (isVenueDomain && role !== "venueOwner") {
+  message.error("Only Venue Owner can login here.");
+  return;
+}
 
     // save token
     dispatch(setToken(accessToken));
@@ -103,12 +112,13 @@ const handleSubmit = async (e) => {
     <div className="flex font-nunito justify-center items-center min-h-screen px-4 lg:px-0 bg-[#0F0B1A]">
       <div className="w-full max-w-lg lg:p-8 p-4 border border-[#2A2448] rounded-lg bg-[#822CE71A]">
         <h2 className="text-2xl font-semibold text-white mb-2 italic">
-          Welcome Back
-        </h2>
-
-        <p className="text-gray-400 mb-6 text-sm">
-          Sign in to continue exploring and managing your Venue.
-        </p>
+  {isAdminDomain ? "Login as Admin" : "Login as Venue"}
+</h2>
+       <p className="text-gray-400 mb-6 text-sm">
+  {isAdminDomain
+    ? "Sign in as Super Admin to manage the platform."
+    : "Sign in to continue exploring and managing your venue."}
+</p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Email */}
