@@ -194,12 +194,14 @@ if (isVenueDomain && role !== "venueOwner") {
           </button>
         </form>
 
-        <span className="flex justify-center pt-2 text-white">
-          No account yet?{" "}
-          <Link to={"/joinAs"}>
-            <span className="text-[#822CE7]"> Create an account</span>
-          </Link>
-        </span>
+       {isVenueDomain && (
+  <span className="flex justify-center pt-2 text-white">
+    No account yet?{" "}
+    <Link to="/joinAs">
+      <span className="text-[#822CE7]">Create an account</span>
+    </Link>
+  </span>
+)}
       </div>
     </div>
   );
