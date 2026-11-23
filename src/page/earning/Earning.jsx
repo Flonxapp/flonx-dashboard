@@ -7,15 +7,22 @@ import HigherIco from "../../components/icon/HigherIco";
 import EarningIco from "../../components/icon/EarningIco";
 import { FaChevronDown } from "react-icons/fa";
 import { useGetEarningsQuery, useGetOrderQuery } from "../redux/api/manageApi";
+import WalletSection from "./WalletSection";
+import WithdrawHistory from "./WithdrawHistory";
 
 const { Option } = Select;
 
+const TABS = [
+  { key: "orders", label: "Orders" },
+  { key: "withdraws", label: "Withdraw Requests" },
+];
+
 const Earning = () => {
+  const [activeTab, setActiveTab] = useState("orders");
   const [frame, setFrame] = useState("Last 24 Hours");
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 10;
 
-  // ================= API =================
   const { data: orderData, isLoading } = useGetOrderQuery({
     page: currentPage,
     limit: pageSize,
@@ -26,7 +33,6 @@ const Earning = () => {
     isLoading: isEarningLoading,
   } = useGetEarningsQuery({ frame });
 
-  // ================= DATA =================
   const orders = orderData?.data?.result || [];
   const meta = orderData?.data?.meta;
 
@@ -34,7 +40,6 @@ const Earning = () => {
   const changePercent = earningData?.data?.earning?.changePercent || 0;
   const isPositive = changePercent >= 0;
 
-  // ================= HELPER =================
   const getChangeText = (percent) => {
     let periodText = "";
 
@@ -63,7 +68,6 @@ const Earning = () => {
       : `Lower than ${periodText}`;
   };
 
-  // ================= TABLE =================
   const columns = [
     {
       title: "Order ID",
@@ -116,15 +120,14 @@ const Earning = () => {
   return (
     <div className="p-3 h-[87vh] overflow-auto">
 
-      {/* HEADER */}
       <div className="flex justify-between">
         <Navigate title={"Earning"} />
       </div>
 
-      {/* EARNING CARD */}
+      <WalletSection />
+
       <div className="border border-[#2A2448] rounded-xl mb-5">
 
-        {/* TOP BAR */}
         <div className="flex border-b px-3 py-3 border-[#2A2448] justify-between items-center">
           <h2 className="text-lg font-semibold italic text-gray-300">
             Showing activities for {frame}
@@ -146,10 +149,8 @@ const Earning = () => {
           </Select>
         </div>
 
-        {/* STATS */}
         <div className="flex px-5 py-4 justify-between items-center">
 
-          {/* LEFT */}
           <div className="flex items-center gap-4">
             <div className="bg-[#1a1238] p-3 rounded-xl">
               <EarningIco color={"#822CE7"} />
@@ -157,7 +158,7 @@ const Earning = () => {
 
             <div>
               <p className="text-gray-400 text-sm italic">
-                Total Earnings
+                Total Sales
               </p>
 
               {isEarningLoading ? (
@@ -170,7 +171,6 @@ const Earning = () => {
             </div>
           </div>
 
-          {/* RIGHT */}
           <div className="text-right">
             <div
               className={`flex items-center gap-1 text-sm font-medium ${
@@ -188,27 +188,47 @@ const Earning = () => {
         </div>
       </div>
 
-      {/* TABLE */}
-      <Table
-        dataSource={orders}
-        columns={columns}
-        loading={isLoading}
-        rowKey="_id"
-        pagination={false}
-        scroll={{ x: "max-content" }}
-        className="custom-table"
-      />
-
-      {/* PAGINATION */}
-      <div className="bg-[#822CE71A] w-full py-3 flex justify-center">
-        <Pagination
-          current={currentPage}
-          pageSize={pageSize}
-          total={meta?.total || 0}
-          onChange={(page) => setCurrentPage(page)}
-          showSizeChanger={false}
-        />
+      <div className="flex gap-2 mb-4 border-b border-[#2A2448]">
+        {TABS.map((tab) => (
+          <button
+            key={tab.key}
+            onClick={() => setActiveTab(tab.key)}
+            className={`px-4 py-2 -mb-px border-b-2 ${
+              activeTab === tab.key
+                ? "border-[#822CE7] text-white"
+                : "border-transparent text-gray-400 hover:text-white"
+            }`}
+          >
+            {tab.label}
+          </button>
+        ))}
       </div>
+
+      {activeTab === "withdraws" ? (
+        <WithdrawHistory />
+      ) : (
+        <>
+          <Table
+            dataSource={orders}
+            columns={columns}
+            loading={isLoading}
+            rowKey="_id"
+            pagination={false}
+            scroll={{ x: "max-content" }}
+            className="custom-table"
+          />
+
+          <div className="bg-[#822CE71A] w-full py-3 flex justify-center">
+            <Pagination
+              current={currentPage}
+              pageSize={pageSize}
+              total={meta?.total || 0}
+              onChange={(page) => setCurrentPage(page)}
+              showSizeChanger={false}
+            />
+          </div>
+        </>
+      )}
 
     </div>
   );

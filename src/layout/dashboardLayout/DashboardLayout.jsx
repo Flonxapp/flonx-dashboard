@@ -1,4 +1,6 @@
+import { Suspense } from "react";
 import { Outlet } from "react-router-dom";
+import PageLoader from "../../components/PageLoader";
 import Header from "../../components/LayoutComponents/Header";
 import SidBar from "../../components/LayoutComponents/SidBar";
 
@@ -12,7 +14,9 @@ const DashboardLayout = () => {
       <div className=" lg:flex-1 lg:ml-[260px]">
         <Header />
         <div className="p-3 bg-[#0F0B1A]">
-          <Outlet />
+          <Suspense fallback={<PageLoader />}>
+            <Outlet />
+          </Suspense>
         </div>
       </div>
     </div>

@@ -1,12 +1,14 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { logout } from "../features/auth/authSlice"; // path adjust
 
+// set VITE_API_URL in .env, e.g. https://api.flonxapp.com
+const API_URL = (import.meta.env.VITE_API_URL || "http://localhost:3500").replace(/\/+$/, "");
+
 const baseQuery = fetchBaseQuery({
-  baseUrl: "http://10.10.20.9:3500/api/v1",
+  baseUrl: `${API_URL}/api/v1`,
 
   prepareHeaders: (headers, { getState }) => {
     const token = getState().logInUser.token;
-    console.log("from baseApi", token);
     if (token) {
       headers.set("authorization", ` ${token}`);
     }
@@ -35,4 +37,4 @@ export const baseApi = createApi({
   tagTypes: ["overview", "host"],
   endpoints: () => ({}),
 });
-export const imageUrl = "http://10.10.20.9:3500";
+export const imageUrl = API_URL;

@@ -1,3 +1,4 @@
+import { lazy } from "react";
 import { createBrowserRouter } from "react-router-dom";
 import ProtectedRoute from "../protectedRoute/ProtectedRoute";
 
@@ -5,55 +6,56 @@ import ProtectedRoute from "../protectedRoute/ProtectedRoute";
 import DashboardLayout from "../layout/dashboardLayout/DashboardLayout";
 
 // Owner Pages
-import Dashboard from "../components/Dashboard/Dashboard";
-import Categories from "../page/CategoriesManagement/Categories";
-import ProductManage from "../page/product/ProductManage";
-import ManageShifts from "../page/manageShifts/ManageShifts";
-import Earning from "../page/earning/Earning";
-import VenueProfile from "../page/venuwProfile/VenueProfile";
-import ManageProfile from "../page/manageProfile/ManageProfile";
-import HelpSupport from "../page/helpSupport/HelpSupport";
-import ProductDetails from "../page/product/ProductDetails";
-import AddProduct from "../page/product/AddProduct";
-import EditProduct from "../page/product/EditProduct";
-import ShiftDetails from "../page/manageShifts/ShiftDetails";
-import AddManageShift from "../page/manageShifts/AddManageShift";
-import FindBarthender from "../page/manageShifts/FindBarthender";
-import BartenderDetails from "../page/manageShifts/BartenderDetails";
-import UpdateVenyeProfile from "../page/venuwProfile/UpdateVenyeProfile";
-import UpdateProfile from "../page/manageProfile/UpdateProfile";
-import UpdatePassword from "../page/manageProfile/UpdatePassword";
-import Notification from "../page/Notification/Notification";
+const Dashboard = lazy(() => import("../components/Dashboard/Dashboard"));
+const Categories = lazy(() => import("../page/CategoriesManagement/Categories"));
+const ProductManage = lazy(() => import("../page/product/ProductManage"));
+const ManageShifts = lazy(() => import("../page/manageShifts/ManageShifts"));
+const Earning = lazy(() => import("../page/earning/Earning"));
+const VenueProfile = lazy(() => import("../page/venuwProfile/VenueProfile"));
+const ManageProfile = lazy(() => import("../page/manageProfile/ManageProfile"));
+const HelpSupport = lazy(() => import("../page/helpSupport/HelpSupport"));
+const ProductDetails = lazy(() => import("../page/product/ProductDetails"));
+const AddProduct = lazy(() => import("../page/product/AddProduct"));
+const EditProduct = lazy(() => import("../page/product/EditProduct"));
+const ShiftDetails = lazy(() => import("../page/manageShifts/ShiftDetails"));
+const AddManageShift = lazy(() => import("../page/manageShifts/AddManageShift"));
+const FindBarthender = lazy(() => import("../page/manageShifts/FindBarthender"));
+const BartenderDetails = lazy(() => import("../page/manageShifts/BartenderDetails"));
+const UpdateVenyeProfile = lazy(() => import("../page/venuwProfile/UpdateVenyeProfile"));
+const UpdateProfile = lazy(() => import("../page/manageProfile/UpdateProfile"));
+const UpdatePassword = lazy(() => import("../page/manageProfile/UpdatePassword"));
+const Notification = lazy(() => import("../page/Notification/Notification"));
 
 // Admin Pages
-import DashboardAdmin from "../adminRotePage/Dashboard/Dashboard";
-import UserManagement from "../adminRotePage/UserManagement/UserManagement";
-import Bartenders from "../adminRotePage/bartenders/Bartenders";
-import UserDetails from "../adminRotePage/UserManagement/UserDetails";
-import VenueOwner from "../adminRotePage/venueOwner/VenueOwner";
-import VenueOwnerDetails from "../adminRotePage/venueOwner/VenueOwnerDetails";
-import LegalCompany from "../adminRotePage/legalCompany/LegalCompany";
-import AddLegalCompany from "../adminRotePage/legalCompany/AddLegalCompany";
-import TermsCondition from "../adminRotePage/terms/TermsCondition";
-import PrivacyPolicy from "../adminRotePage/privecy/PrivacyPolicy";
-import HelpSupportAdmin from "../adminRotePage/helpSupport/HelpSupport";
-import HelpSupportDetails from "../adminRotePage/helpSupport/HelpSupportDetails";
-import EarningAdmin from "../adminRotePage/earning/Earning";
-import ManageProfileAdmin from "../adminRotePage/manageProfile/ManageProfile";
-import UpdateProfileAdmin from "../adminRotePage/manageProfile/UpdateProfile";
-import UpdatePasswordAdmin from "../adminRotePage/manageProfile/UpdatePassword";
-import NotificationAdmin from "../adminRotePage/Notification/Notification";
+const DashboardAdmin = lazy(() => import("../adminRotePage/Dashboard/Dashboard"));
+const UserManagement = lazy(() => import("../adminRotePage/UserManagement/UserManagement"));
+const Bartenders = lazy(() => import("../adminRotePage/bartenders/Bartenders"));
+const UserDetails = lazy(() => import("../adminRotePage/UserManagement/UserDetails"));
+const VenueOwner = lazy(() => import("../adminRotePage/venueOwner/VenueOwner"));
+const VenueOwnerDetails = lazy(() => import("../adminRotePage/venueOwner/VenueOwnerDetails"));
+const LegalCompany = lazy(() => import("../adminRotePage/legalCompany/LegalCompany"));
+const AddLegalCompany = lazy(() => import("../adminRotePage/legalCompany/AddLegalCompany"));
+const TermsCondition = lazy(() => import("../adminRotePage/terms/TermsCondition"));
+const PrivacyPolicy = lazy(() => import("../adminRotePage/privecy/PrivacyPolicy"));
+const HelpSupportAdmin = lazy(() => import("../adminRotePage/helpSupport/HelpSupport"));
+const HelpSupportDetails = lazy(() => import("../adminRotePage/helpSupport/HelpSupportDetails"));
+const EarningAdmin = lazy(() => import("../adminRotePage/earning/Earning"));
+const WithdrawRequestsAdmin = lazy(() => import("../adminRotePage/withdrawRequests/WithdrawRequests"));
+const ManageProfileAdmin = lazy(() => import("../adminRotePage/manageProfile/ManageProfile"));
+const UpdateProfileAdmin = lazy(() => import("../adminRotePage/manageProfile/UpdateProfile"));
+const UpdatePasswordAdmin = lazy(() => import("../adminRotePage/manageProfile/UpdatePassword"));
+const NotificationAdmin = lazy(() => import("../adminRotePage/Notification/Notification"));
 
 // Auth
-import Login from "../Auth/Login";
-import LoginAdmin from "../adminAuth/Login";
-import JoinAs from "../Auth/JoinAs";
-import CompleteProfile from "../Auth/CompleteProfile";
-import ConnectStripe from "../Auth/ConnectStripe";
-import ForgetPass from "../Auth/ForgetPass";
-import Verify from "../Auth/Verify";
-import ResetPass from "../Auth/ResetPass";
-import RegisterVerify from "../Auth/RegisterVerify";
+const Login = lazy(() => import("../Auth/Login"));
+const LoginAdmin = lazy(() => import("../adminAuth/Login"));
+const JoinAs = lazy(() => import("../Auth/JoinAs"));
+const CompleteProfile = lazy(() => import("../Auth/CompleteProfile"));
+const ConnectStripe = lazy(() => import("../Auth/ConnectStripe"));
+const ForgetPass = lazy(() => import("../Auth/ForgetPass"));
+const Verify = lazy(() => import("../Auth/Verify"));
+const ResetPass = lazy(() => import("../Auth/ResetPass"));
+const RegisterVerify = lazy(() => import("../Auth/RegisterVerify"));
 
 export const router = createBrowserRouter([
   {
@@ -202,6 +204,10 @@ export const router = createBrowserRouter([
       {
         path: "dashboard/earning",
         element: <EarningAdmin />,
+      },
+      {
+        path: "dashboard/withdraw-requests",
+        element: <WithdrawRequestsAdmin />,
       },
 
       {

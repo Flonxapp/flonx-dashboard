@@ -18,6 +18,7 @@ import PrivecyIco from "../icon/PrivecyIco";
 import LegalIco from "../icon/LegalIco";
 
 import { useGetProfileQuery } from "../../page/redux/api/userApi";
+import { useGetAllWithdrawRequestsQuery } from "../../page/redux/api/withdrawApi";
 import { logout } from "../../page/redux/features/auth/authSlice";
 
 /* ---------------- ADMIN ITEMS ---------------- */
@@ -51,6 +52,13 @@ const adminItems = [
     label: "Earning",
     icon: <EarningIco color={"white"} />,
     link: "/admin/dashboard/earning",
+  },
+  {
+    key: "withdrawRequests",
+    label: "Withdraw Requests",
+    icon: <EarningIco color={"white"} />,
+    link: "/admin/dashboard/withdraw-requests",
+    showPendingWithdrawBadge: true,
   },
   {
     key: "helpSupport",
@@ -142,6 +150,13 @@ const SidBar = () => {
 
   const role = adminProfile?.data?.user?.role;
 
+  // pending withdraw count for the menu badge
+  const { data: pendingWithdraws } = useGetAllWithdrawRequestsQuery(
+    { status: "PENDING", limit: 1 },
+    { skip: role !== "superAdmin", pollingInterval: 60000 }
+  );
+  const pendingWithdrawCount = pendingWithdraws?.data?.meta?.total || 0;
+
   const items = useMemo(() => {
     if (role === "superAdmin") return adminItems;
     if (role === "venueOwner") return venueOwnerItems;
@@ -199,7 +214,6 @@ const SidBar = () => {
   return (
     <div className="custom-sidebar h-[100vh] bg-[#0F0B1A] text-white border-r border-[#2A2448] flex flex-col justify-between">
 
-      {/* TOP */}
       <div>
         <div className="py-8 flex justify-center">
           <img src={logo} alt="Logo" className="w-[130px]" />
@@ -219,13 +233,17 @@ const SidBar = () => {
               >
                 <span className="mr-2">{item.icon}</span>
                 <span className="w-full">{item.label}</span>
+                {item.showPendingWithdrawBadge && pendingWithdrawCount > 0 && (
+                  <span className="ml-2 min-w-[22px] h-[22px] px-1.5 rounded-full bg-yellow-500 text-black text-xs font-semibold flex items-center justify-center">
+                    {pendingWithdrawCount > 99 ? "99+" : pendingWithdrawCount}
+                  </span>
+                )}
               </Link>
             </div>
           ))}
         </div>
       </div>
 
-      {/* BOTTOM */}
       <div className="mx-4 mb-4">
         <div className="border-[#EF4444] bg-[#dc354621] rounded-xl p-3 border">
           <button
