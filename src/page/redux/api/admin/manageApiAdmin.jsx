@@ -15,19 +15,18 @@ const manageApi = baseApi.injectEndpoints({
 
 
   getEarningsAdmin: builder.query({
-      query: () => {
-        return {
-          url: "/meta/admin-earning",
-          method: "GET",
-        };
-      },
+      query: ({ frame } = {}) => ({
+        url: "/meta/admin-earning",
+        method: "GET",
+        params: frame ? { frame } : undefined,
+      }),
       providesTags: ["terms"],
     }),
 
     getDahboardActivityAdmin: builder.query({
       query: ({ fram }) => {
         return {
-          url: `meta/get-activities?frame=${fram}`,
+          url: `/meta/get-activities?frame=${encodeURIComponent(fram)}`,
           method: "GET",
         };
       },

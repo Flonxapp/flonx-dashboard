@@ -137,7 +137,7 @@ const ManageShifts = () => {
             }}
           >
             <Option value="all">All</Option>
-            <Option value="Pending">Pending</Option>
+            <Option value="Requested">Requested</Option>
             <Option value="Upcoming">Upcoming</Option>
             <Option value="Completed">Completed</Option>
             <Option value="Active">Active</Option>

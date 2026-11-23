@@ -12,7 +12,6 @@ import { useGetProfileQuery } from "../page/redux/api/userApi";
 const ConnectStripe = () => {
   const { data: adminProfile } = useGetProfileQuery();
   const isStripe = adminProfile?.data?.isStripeAccountConnected;
-  console.log(isStripe);
   const [connectStripe, { isLoading }] = useCreateStripeMutation();
   const handleConnectStripe = async () => {
     try {

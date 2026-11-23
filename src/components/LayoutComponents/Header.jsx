@@ -17,7 +17,11 @@ import { FiUser } from "react-icons/fi";
 import { IoSettingsOutline } from "react-icons/io5";
 import { TbCategory2 } from "react-icons/tb";
 import { FaChevronRight, FaHome } from "react-icons/fa";
-import items from "../item.json";
+import { adminItems, venueOwnerItems } from "./SidBar";
+import { useDispatch } from "react-redux";
+import { logout } from "../../page/redux/features/auth/authSlice";
+import { baseApi } from "../../page/redux/api/baseApi";
+import { useGetNotificationsQuery } from "../../page/redux/api/notificationApi";
 import { IoIosLogIn } from "react-icons/io";
 import { useGetProfileQuery } from "../../page/redux/api/userApi";
 const icons = {
@@ -104,9 +108,22 @@ const Header = () => {
   const [selectedKey, setSelectedKey] = useState("dashboard");
   const [expandedKeys, setExpandedKeys] = useState([]);
   const navigate = useNavigate();
- const { data: adminProfile, isLoading: profileLoading } =
+  const dispatch = useDispatch();
+  const { data: adminProfile, isLoading: profileLoading } =
     useGetProfileQuery();
-    console.log(adminProfile)
+  const role = adminProfile?.data?.user?.role;
+  const isAdmin = role === "superAdmin";
+  // same menu as the desktop sidebar
+  const items = isAdmin ? adminItems : role === "venueOwner" ? venueOwnerItems : [];
+  const notificationLink = isAdmin
+    ? "/admin/dashboard/Settings/notification"
+    : "/dashboard/Settings/notification";
+  // unread badge, refreshed every minute
+  const { data: notificationData } = useGetNotificationsQuery(
+    { page: 1, limit: 1 },
+    { skip: !role, pollingInterval: 60000, skipPollingIfUnfocused: true },
+  );
+  const unreadCount = notificationData?.data?.meta?.unreadCount || 0;
   const contentRef = useRef({});
 
   const onParentClick = (key) => {
@@ -131,8 +148,9 @@ const Header = () => {
     setPlacement(e.target.value);
   };
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    navigate("/login");
+    dispatch(logout());
+    dispatch(baseApi.util.resetApiState());
+    navigate(isAdmin ? "/admin/login" : "/login", { replace: true });
   };
   return (
     <div className="bg-[#0F0B1A] border-b border-[#2A2448] text-black pt-3">
@@ -147,7 +165,7 @@ const Header = () => {
         <div></div>
         <div className="flex gap-8 p-1 px-6">
           <div className="relative">
-            <Link to={"/dashboard/Settings/notification"}>
+            <Link to={notificationLink}>
               <div className="w-[45px] h-[45px] flex items-center justify-center text-xl rounded-lg bg-[#2A2448] text-[#822CE7] ">
                 <span>
                   <LuBell />
@@ -265,9 +283,11 @@ const Header = () => {
               </div>
             </Drawer>
 
-            <span className="absolute top-0 right-0 -mr-2  w-5 h-5 bg-[#822CE7] text-white text-xs flex items-center justify-center rounded-full">
-              0
-            </span>
+            {unreadCount > 0 && (
+              <span className="absolute top-0 right-0 -mr-2  w-5 h-5 bg-[#822CE7] text-white text-xs flex items-center justify-center rounded-full">
+                {unreadCount > 99 ? "99+" : unreadCount}
+              </span>
+            )}
           </div>
 
          

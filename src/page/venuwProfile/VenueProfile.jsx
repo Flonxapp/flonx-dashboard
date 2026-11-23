@@ -14,8 +14,13 @@ import { PageLoader } from "../../components/Loading";
 const VenueProfile = () => {
   const { data: venueProdile, isLoading } = useGetMyVenueQuery();
   const venue = venueProdile?.data;
-  console.log(venueProdile);
-  const venueLink = `https://flonx-progressive-web-client.vercel.app/auth/login/${venue?._id}`;
+  // printed on the venue QR code; set VITE_CUSTOMER_APP_URL to the
+  // production customer app domain before printing codes
+  const customerAppUrl = (
+    import.meta.env.VITE_CUSTOMER_APP_URL ||
+    "https://flonx-progressive-web-client.vercel.app"
+  ).replace(/\/+$/, "");
+  const venueLink = `${customerAppUrl}/auth/login/${venue?._id}`;
   const [showQRModal, setShowQRModal] = useState(false);
   const qrRef = useRef(null);
 

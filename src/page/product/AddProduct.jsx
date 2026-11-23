@@ -25,15 +25,12 @@ const { Option } = Select;
 
 const AddProduct = () => {
   const { data: venueProfile } = useGetMyVenueQuery();
-  console.log(venueProfile);
   const id = venueProfile?.data?._id;
-  console.log(id);
   const [addProduct, { isLoading }] = useAddProductMutation();
   const { data: category } = useGetVenueCategoryAllQuery(
     { page: 1, limit: 100, id },
     { skip: !id },
   );
-  console.log(category);
   const formCategory = category?.data?.result;
   const [form] = Form.useForm();
   const [fileList, setFileList] = useState([]);
@@ -84,7 +81,6 @@ const AddProduct = () => {
 
       // 🔍 Debug
       for (let pair of formData.entries()) {
-        console.log(pair[0], pair[1]);
       }
 
       const res = await addProduct(formData).unwrap();

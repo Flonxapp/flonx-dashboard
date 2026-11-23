@@ -5,7 +5,6 @@ import { useGetProfileQuery } from "../../page/redux/api/admin/userApiAdmin";
 
 const ManageProfile = () => {
   const { data: profileData, isLoading } = useGetProfileQuery();
-console.log(profileData)
   if (isLoading) return <p>Loading...</p>;
 
   const profile = profileData?.data;

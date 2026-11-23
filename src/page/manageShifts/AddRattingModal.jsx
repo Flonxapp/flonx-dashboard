@@ -11,7 +11,6 @@ const AddRattingModal = ({
   shift,
   bartender,
 }) => {
-    console.log(shift, bartender)
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(0);
 

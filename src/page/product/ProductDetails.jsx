@@ -8,7 +8,6 @@ import { useGetSingleProductQuery } from "../redux/api/productApi";
 const ProductDetails = () => {
   const {id} = useParams()
   const {data:productDetails} = useGetSingleProductQuery({id})
-  console.log(productDetails)
   const product = productDetails?.data;
 
   return (

@@ -15,12 +15,11 @@ getDahboardTotal: builder.query({
     }),
 
       getEarnings: builder.query({
-      query: () => {
-        return {
-          url: "/meta/venue-owner-earning",
-          method: "GET",
-        };
-      },
+      query: ({ frame } = {}) => ({
+        url: "/meta/venue-owner-earning",
+        method: "GET",
+        params: frame ? { frame } : undefined,
+      }),
       providesTags: ["terms"],
     }),
 
@@ -28,7 +27,7 @@ getDahboardTotal: builder.query({
     getDahboardActivity: builder.query({
       query: ({fram}) => {
         return {
-          url: `/meta/get-venue-activities?frame=${fram}`,
+          url: `/meta/get-venue-activities?frame=${encodeURIComponent(fram)}`,
           method: "GET",
         };
       },

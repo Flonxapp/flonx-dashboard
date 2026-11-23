@@ -15,24 +15,20 @@ const ShiftDetails = () => {
   const { id } = useParams();
 
   const { data: singleShiftData, isLoading } = useGetSingleShiftsQuery({ id });
-  console.log(singleShiftData)
 const [openAddModal, setOpenAddModal] = useState(false);
   const [updateShiftRequest, { isLoading: rejectLoading }] =
     useDeclinedShiftRequestMutation();
 
   const shift = singleShiftData?.data;
-  console.log(shift);
 
   const handleDecline = async () => {
     try {
       const res = await updateShiftRequest({
         id: shift?._id,
       }).unwrap();
-      console.log(res);
 
       message.success(res?.message || "Shift request declined successfully!");
     } catch (err) {
-      console.log(err);
       message.error(err?.data?.message || "Failed to decline request!");
     }
   };

@@ -142,7 +142,6 @@ const Earning = () => {
             <Option value="Last Week">Last Week</Option>
             <Option value="Last Fortnight">Last Fortnight</Option>
             <Option value="Last Month">Last Month</Option>
-            <Option value="Last Year">Last Year</Option>
           </Select>
         </div>
 

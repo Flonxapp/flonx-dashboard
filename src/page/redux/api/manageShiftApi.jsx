@@ -50,7 +50,7 @@ const manageShift = baseApi.injectEndpoints({
           status: status || undefined, // 🔥 key part
         },
       }),
-      providesTags: ["shift"],
+      providesTags: ["shift", "updateProfile"],
     }),
 
     getSingleShifts: builder.query({

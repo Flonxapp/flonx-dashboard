@@ -13,7 +13,6 @@ import { useGetDahboardTotalAdminQuery } from "../../page/redux/api/admin/manage
 
 const Dashboard = () => {
   const {data:dashboardTotalData} = useGetDahboardTotalAdminQuery()
-  console.log(dashboardTotalData)
   return (
     <div className=" ">
       <div className="grid grid-cols-3 gap-4">

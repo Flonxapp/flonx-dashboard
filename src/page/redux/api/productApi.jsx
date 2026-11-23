@@ -15,7 +15,7 @@ const product = baseApi.injectEndpoints({
       searchTerm: searchTerm,
     },
   }),
-  providesTags: ["product"],
+  providesTags: ["product", "updateProfile"],
 }),
 
      getSingleProduct: builder.query({

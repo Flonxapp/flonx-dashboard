@@ -20,7 +20,6 @@ const handleMarkResolved = async () => {
     }).unwrap();
     message.success(res?.message);
   } catch (error) {
-    console.log(error);
     message.error(error?.data?.message || "Something went wrong!");
   }
 };

@@ -15,7 +15,7 @@ const Activity = () => {
   const [frame, setFrame] = useState("Last 24 Hours");
 
   const { data: dashboardActivity } =
-    useGetDahboardActivityQuery(frame);
+    useGetDahboardActivityQuery({ fram: frame });
 
   const activity = dashboardActivity?.data;
 

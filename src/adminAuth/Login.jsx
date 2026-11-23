@@ -26,9 +26,13 @@ const Login = () => {
 
     if (savedData) {
       const parsed = JSON.parse(savedData);
+      // older versions saved the password too; remove it
+      if (parsed.password) {
+        localStorage.setItem("loginData", JSON.stringify({ email: parsed.email }));
+      }
       setFormValues({
         email: parsed.email || "",
-        password: parsed.password || "",
+        password: "",
         remember: true,
       });
     }
@@ -57,9 +61,14 @@ const Login = () => {
 
       // ✅ Role check
       if (role === "superAdmin") {
-        dispatch(setToken(res?.data?.accessToken));
+        dispatch(
+          setToken({
+            accessToken: res?.data?.accessToken,
+            refreshToken: res?.data?.refreshToken,
+            role,
+          }),
+        );
 
-        console.log("Login Success:", res);
         navigate("/admin");
         message.success(res?.message);
 
@@ -67,10 +76,7 @@ const Login = () => {
         if (formValues.remember) {
           localStorage.setItem(
             "loginData",
-            JSON.stringify({
-              email: formValues.email,
-              password: formValues.password,
-            }),
+            JSON.stringify({ email: formValues.email }),
           );
         } else {
           localStorage.removeItem("loginData");

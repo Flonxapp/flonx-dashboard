@@ -15,7 +15,6 @@ const RecentShifts = () => {
 
 
   const showModal2 = (record) => {
-    console.log("View:", record);
   };
 
   // ✅ Transform API data → table format

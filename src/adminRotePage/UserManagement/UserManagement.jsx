@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Input, Modal, Pagination, Select, Table, message } from "antd";
+
+const { Option } = Select;
 import { MdBlockFlipped } from "react-icons/md";
 import { FaArrowLeft, FaChevronDown } from "react-icons/fa";
 import { AiOutlinePhone, AiOutlineMail } from "react-icons/ai";

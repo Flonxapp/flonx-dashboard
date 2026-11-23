@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Input, Modal, Pagination, Select, Table, message } from "antd";
+
+const { Option } = Select;
 import { MdBlockFlipped } from "react-icons/md";
 import { FaArrowLeft, FaChevronDown } from "react-icons/fa";
 import { AiOutlinePhone, AiOutlineMail } from "react-icons/ai";
@@ -44,7 +46,6 @@ const VenueOwner = () => {
 const handleBlockUnblock = async (record) => {
   const id = record?.user?._id;
   const isBlocked = record.user.isBlocked || false;
-console.log(isBlocked)
   handleDeleteConfirm({
     title: isBlocked ? "Unblock User" : "Block User",
     content: isBlocked

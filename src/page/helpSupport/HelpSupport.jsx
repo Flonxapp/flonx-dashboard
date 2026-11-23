@@ -19,7 +19,6 @@ const HelpSupport = () => {
       message.success("Your message has been sent!");
       form.resetFields();
     } catch (error) {
-      console.log(error);
       message.error("Failed to send message!");
     }
   };

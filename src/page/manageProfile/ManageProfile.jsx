@@ -15,7 +15,6 @@ const ManageProfile = () => {
   const { data: adminProfile, isLoading: profileLoading } =
     useGetProfileQuery();
 
-    console.log(adminProfile)
 
   const [connectStripe, { isLoading: connectLoading }] =
     useCreateStripeMutation();

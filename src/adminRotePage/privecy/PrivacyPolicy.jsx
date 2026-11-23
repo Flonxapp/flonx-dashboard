@@ -12,7 +12,6 @@ import {
 const PrivacyPolicy = () => {
   const [addTerms, { isLoading }] = usePostPrivecyMutation();
   const { data: termData } = useGetPrivecyQuery();
-  console.log(termData);
   const editor = useRef(null);
   const [content, setContent] = useState("");
 

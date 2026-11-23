@@ -3,7 +3,7 @@ import { Navigate } from "../../Navigate";
 import { useParams } from "react-router-dom";
 import { FaStar } from "react-icons/fa";
 
-import { message, Spin } from "antd";
+import { Modal, message, Spin } from "antd";
 import { useGetSingleBartenderQuery, useUserBlockUnblockMutation } from "../../page/redux/api/admin/userApiAdmin";
 
 const BartenderDetails = () => {
@@ -24,13 +24,13 @@ const BartenderDetails = () => {
     const userId = user?.user?._id;
     const isBlocked = user?.user?.isBlocked;
 
-    handleDeleteConfirm({
+    Modal.confirm({
       title: isBlocked ? "Unblock User" : "Block User",
       content: isBlocked
         ? "Are you sure you want to unblock this user?"
         : "Are you sure you want to block this user?",
 
-      onConfirm: async () => {
+      onOk: async () => {
         try {
           await blockUnblock(userId).unwrap();
           message.success(

@@ -1,49 +1,73 @@
-name: Deploy React Dashboard to EC2
+name: Deploy dashboard (venue owner + admin) to EC2
 
 on:
   push:
     branches:
       - 'main'
 
+# never run two deploys at the same time
+concurrency:
+  group: deploy-dashboard
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: '20.15'
+          node-version: '20'
+          cache: 'npm'
 
-      - name: Install Dependencies
-        run: npm install --frozen-lockfile
+      # exact versions from package-lock.json, no dependency install scripts
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
 
+      # build-time settings (VITE_API_URL, VITE_GOOGLE_MAPS_API_KEY, VITE_CUSTOMER_APP_URL) from the ENV_VARS_JSON secret
       - name: Set environment variables from ENV_VARS_JSON
         env:
           ENV_VARS_JSON: ${{ secrets.ENV_VARS_JSON }}
         run: |
-          echo "$ENV_VARS_JSON" | jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' >> $GITHUB_ENV
+          if [ -n "$ENV_VARS_JSON" ]; then
+            printf '%s' "$ENV_VARS_JSON" | jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' >> "$GITHUB_ENV"
+          fi
 
-      - name: Build Vite Project
-        run: npx vite build
+      - name: Build
+        run: npm run build
 
       - name: Set up SSH
         env:
           SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+          EC2_HOST: ${{ secrets.EC2_HOST }}
+          # Optional but recommended: the server's host key line(s) from
+          # `ssh-keyscan -H <host>` run once from a trusted machine.
+          EC2_KNOWN_HOSTS: ${{ secrets.EC2_KNOWN_HOSTS }}
         run: |
           mkdir -p ~/.ssh
-          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+          if [ -n "$EC2_KNOWN_HOSTS" ]; then
+            printf '%s\n' "$EC2_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          else
+            ssh-keyscan -H "$EC2_HOST" >> ~/.ssh/known_hosts
+          fi
 
+      # Old hashed files are kept on purpose: a browser that still has the
+      # previous index.html can finish loading. nginx only needs a reload.
       - name: Deploy to EC2
         env:
           EC2_HOST: ${{ secrets.EC2_HOST }}
           EC2_USER: ${{ secrets.EC2_USER }}
         run: |
-          ssh $EC2_USER@$EC2_HOST "mkdir -p ~/applications/dashboard/dist"
-          rsync -avz dist/ $EC2_USER@$EC2_HOST:~/applications/dashboard/dist/
-          ssh $EC2_USER@$EC2_HOST "sudo systemctl restart nginx"
+          set -euo pipefail
+          ssh "$EC2_USER@$EC2_HOST" "mkdir -p ~/applications/dashboard/dist"
+          rsync -az dist/ "$EC2_USER@$EC2_HOST:~/applications/dashboard/dist/"
+          ssh "$EC2_USER@$EC2_HOST" "sudo systemctl reload nginx"

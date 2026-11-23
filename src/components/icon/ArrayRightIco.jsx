@@ -12,8 +12,8 @@ const ArrayRightIco = () => {
       <path
         d="M0.500033 0.5C0.500033 0.5 4.5 3.44593 4.5 4.5C4.5 5.55413 0.5 8.5 0.5 8.5"
         stroke="#C9C6D6"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );

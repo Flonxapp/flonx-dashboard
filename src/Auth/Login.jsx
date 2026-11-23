@@ -28,10 +28,14 @@ const isVenueDomain = hostname === "venue.flonxapp.com";
 
     if (savedData) {
       const parsedData = JSON.parse(savedData);
+      // older versions saved the password too; remove it
+      if (parsedData.password) {
+        localStorage.setItem("loginData", JSON.stringify({ email: parsedData.email }));
+      }
 
       setFormValues({
         email: parsedData.email || "",
-        password: parsedData.password || "",
+        password: "",
         remember: true,
       });
     }
@@ -57,12 +61,8 @@ const handleSubmit = async (e) => {
       password: formValues.password,
     }).unwrap();
 
-    console.log(res);
-
     const accessToken = res?.data?.accessToken;
     const role = res?.data?.role;
-
-    console.log(role);
 
     // only allow venueOwner & superAdmin
    // Role validation based on subdomain
@@ -77,16 +77,19 @@ if (isVenueDomain && role !== "venueOwner") {
 }
 
     // save token
-    dispatch(setToken(accessToken));
+    dispatch(
+      setToken({
+        accessToken,
+        refreshToken: res?.data?.refreshToken,
+        role,
+      }),
+    );
 
     // remember me
     if (formValues.remember) {
       localStorage.setItem(
         "loginData",
-        JSON.stringify({
-          email: formValues.email,
-          password: formValues.password,
-        })
+        JSON.stringify({ email: formValues.email })
       );
     } else {
       localStorage.removeItem("loginData");

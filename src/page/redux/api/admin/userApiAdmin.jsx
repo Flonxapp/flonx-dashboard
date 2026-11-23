@@ -156,24 +156,6 @@ const useApi = baseApi.injectEndpoints({
         };
       },
     }),
-    getHostUser: builder.query({
-      query: ({ user, page, search }) => {
-        return {
-          url: `/dashboard/get-all-user?role=${user}&page=${page}&searchTerm=${search}`,
-          method: "GET",
-        };
-      },
-      providesTags: ["host"],
-    }),
-
-    blockUserHost: builder.mutation({
-      query: (data) => ({
-        url: `/dashboard/block-unblock-user`,
-        method: "PATCH",
-        body: data,
-      }),
-      invalidatesTags: ["host"],
-    }),
   }),
 });
 
@@ -185,8 +167,6 @@ export const {
   useResetPasswordMutation,
   useUpdateProfileMutation,
   useChangePasswordAdminMutation,
-  useGetHostUserQuery,
-  useBlockUserHostMutation,
   useGetAllUserQuery,
   useGetSingleUserQuery,
   useUserBlockUnblockMutation,

@@ -16,7 +16,6 @@ const UpdateProfile = () => {
   const [updateProfile, { isLoading: updating }] = useUpdateProfileMutation();
 
   const profile = profileData?.data;
-  console.log(profile);
   const [form] = Form.useForm();
   const [fileList, setFileList] = useState([]);
   const [position, setPosition] = useState(null);

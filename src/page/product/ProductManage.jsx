@@ -17,12 +17,10 @@ const ProductManage = () => {
   const pageSize = 10;
   const [searchTerm, setSearchTerm] = useState("");
   const id = venueProfile?.data?._id
-  console.log(id)
 const { data: allProduct, refetch } = useGetProductAllQuery(
   { id, searchTerm, currentPage },
   { skip: !id }
 );
-  console.log(allProduct)
   const products = allProduct?.data?.result || [];
 
 const tableData = products.map((item, index) => ({

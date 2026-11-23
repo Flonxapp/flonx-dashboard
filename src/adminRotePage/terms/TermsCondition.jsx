@@ -11,7 +11,6 @@ const TermsCondition = () => {
   
   const [addTerms, {isLoading}] = usePostTermsConditionMutation();
   const { data: termData } = useGetTermsConditionsQuery();
-  console.log(termData);
   const editor = useRef(null);
   const [content, setContent] = useState("");
 

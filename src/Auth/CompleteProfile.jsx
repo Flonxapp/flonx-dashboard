@@ -83,20 +83,10 @@ const handlePlaceChanged = () => {
         },
       };
 
-      // ✅ DEBUG START
-      console.log("Form Values:", values);
-      console.log("Final Data Object:", data);
-      console.log("Latitude:", values.lat);
-      console.log("Longitude:", values.lng);
-      console.log("Uploaded File:", fileList[0]);
 
       // FormData check
       formData.append("data", JSON.stringify(data));
 
-      for (let pair of formData.entries()) {
-        console.log("FormData =>", pair[0], pair[1]);
-      }
-      // ✅ DEBUG END
 
       const response = await completeProfile(formData).unwrap();
 

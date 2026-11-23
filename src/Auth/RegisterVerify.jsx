@@ -5,7 +5,7 @@ import { Spin, message } from "antd";
 import {
   useRegisterVerifyMutation,
   useRegisterVerifyUserMutation,
-  useResentVerifyMutation,
+  useResendVerifyCodeMutation,
 } from "../page/redux/api/userApi";
 import { useDispatch } from "react-redux";
 import { setToken } from "../page/redux/features/auth/authSlice";
@@ -13,7 +13,7 @@ import { setToken } from "../page/redux/features/auth/authSlice";
 const RegisterVerify = () => {
   const dispatch = useDispatch();
   const [registerVerify, { isLoading }] = useRegisterVerifyUserMutation();
-  const [resendVerify, { isLoading: isResending }] = useResentVerifyMutation();
+  const [resendVerify, { isLoading: isResending }] = useResendVerifyCodeMutation();
   const [otp, setOtp] = useState("");
   const [email, setEmail] = useState("");
   const navigate = useNavigate();
@@ -39,10 +39,15 @@ const RegisterVerify = () => {
     try {
       const payload = { email, verifyCode: Number(otp) };
       const response = await registerVerify(payload).unwrap();
-      console.log(response);
       message.success(response?.message || "Verification successful!");
       localStorage.removeItem("registerEmail");
-      dispatch(setToken(response?.data?.accessToken));
+      dispatch(
+        setToken({
+          accessToken: response?.data?.accessToken,
+          refreshToken: response?.data?.refreshToken,
+          role: "venueOwner",
+        }),
+      );
       navigate("/completeProfile");
     } catch (error) {
       console.error("Verification error:", error);

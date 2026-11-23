@@ -20,9 +20,10 @@ import LegalIco from "../icon/LegalIco";
 import { useGetProfileQuery } from "../../page/redux/api/userApi";
 import { useGetAllWithdrawRequestsQuery } from "../../page/redux/api/withdrawApi";
 import { logout } from "../../page/redux/features/auth/authSlice";
+import { baseApi } from "../../page/redux/api/baseApi";
 
 /* ---------------- ADMIN ITEMS ---------------- */
-const adminItems = [
+export const adminItems = [
   {
     key: "dashboard",
     label: "Dashboard",
@@ -93,7 +94,7 @@ const adminItems = [
 ];
 
 /* ---------------- VENUE OWNER ITEMS ---------------- */
-const venueOwnerItems = [
+export const venueOwnerItems = [
   {
     key: "dashboard",
     label: "Dashboard",
@@ -206,7 +207,10 @@ const SidBar = () => {
 
   const handleLogout = () => {
     dispatch(logout());
-    navigate("/login");
+    dispatch(baseApi.util.resetApiState());
+    navigate(role === "superAdmin" ? "/admin/login" : "/login", {
+      replace: true,
+    });
   };
 
   if (profileLoading) return null;

@@ -32,6 +32,14 @@ const useApi = baseApi.injectEndpoints({
       },
     }),
 
+    resendVerifyCode: builder.mutation({
+      query: (data) => ({
+        url: "/user/resend-verify-code",
+        method: "POST",
+        body: data,
+      }),
+    }),
+
     resentVerify: builder.mutation({
       query: (data) => {
         return {
@@ -109,28 +117,11 @@ registerVerifyUser: builder.mutation({
         };
       },
     }),
-    getHostUser: builder.query({
-      query: ({ user, page, search }) => {
-        return {
-          url: `/dashboard/get-all-user?role=${user}&page=${page}&searchTerm=${search}`,
-          method: "GET",
-        };
-      },
-      providesTags: ["host"],
-    }),
-
-    blockUserHost: builder.mutation({
-      query: (data) => ({
-        url: `/dashboard/block-unblock-user`,
-        method: "PATCH",
-        body: data,
-      }),
-      invalidatesTags: ["host"],
-    }),
   }),
 });
 
 export const {
+  useResendVerifyCodeMutation,
   useLoginAdminMutation,
 useGetProfileQuery,
   useForgotPasswordMutation,
@@ -138,8 +129,6 @@ useGetProfileQuery,
   useResetPasswordMutation,
   useUpdateProfileMutation,
   useChangePasswordMutation,
-  useGetHostUserQuery,
-  useBlockUserHostMutation,
   useRegisterUserMutation,
   useResentVerifyMutation,
   useAddVenueMutation,

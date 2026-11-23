@@ -13,7 +13,6 @@ const BartenderDetails = () => {
   });
 
   const bartender = bartenderDetails?.data;
-  console.log(bartender);
   // ✅ Loading state
   if (isLoading) {
     return <PageLoader></PageLoader>;

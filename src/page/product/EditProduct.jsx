@@ -21,11 +21,8 @@ const { Option } = Select;
 const EditProduct = () => {
   const {id} = useParams();
     const {data:venueProfile} = useGetMyVenueQuery()
-    console.log(venueProfile)
     const venueId = venueProfile?.data?._id
-    console.log(venueId)
     const {data:productDetails} = useGetSingleProductQuery({id})
-    console.log(productDetails)
     const product = productDetails?.data;
       const [form] = Form.useForm();
     useEffect(() => {

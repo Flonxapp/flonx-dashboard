@@ -5,7 +5,6 @@ import { imageUrl } from "../redux/api/baseApi";
 import { useUpdateCategoryMutation } from "../redux/api/categoryApi";
 
 const EditCategories = ({ editModal, setEditModal, selectedCategory }) => {
-  console.log(selectedCategory)
   const [form] = Form.useForm();
 const [editCategory, { isLoading }] = useUpdateCategoryMutation();
  
@@ -37,8 +36,6 @@ const [editCategory, { isLoading }] = useUpdateCategoryMutation();
       name: values.name,
     };
 
-    console.log("Update ID:", selectedCategory?._id);
-    console.log("Update Data:", data);
 
     const res = await editCategory({
       id: selectedCategory?._id,
